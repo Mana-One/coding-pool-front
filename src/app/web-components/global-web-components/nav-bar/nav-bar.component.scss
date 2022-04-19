@@ -1,0 +1,30 @@
+.navbar{
+ background-color: #19426c;
+  position: absolute;
+  width: 100%;
+  z-index: 2;
+}
+
+.nav-item{
+  margin-left: .5rem;
+  margin-right: .5rem;
+}
+
+.nav-link{
+  font-size: 1.1rem;
+  font-family: 'Salsa';
+}
+
+.veil{
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: #baacac59;
+  z-index: -1;
+  opacity: 0;
+  transition: all 0.3s linear;
+}
+
+.nav-height{
+  height: 76px;
+}

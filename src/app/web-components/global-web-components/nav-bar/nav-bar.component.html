@@ -1,3 +1,33 @@
-<div>
+<div class="d-flex flex-column nav-height">
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <button id="toggler" (click)="manageVeil()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-content" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
+  <a class="navbar-brand d-flex d-lg-none" [routerLink]="'/'">
+    <img height="50px" src="assets/images/logo_white_reverse.svg">
+  </a>
+
+  <div class="collapse navbar-collapse" id="nav-content">
+    <a class="navbar-brand d-none d-lg-flex" [routerLink]="'/'">
+      <img height="50px" src="assets/images/logo_white.svg">
+    </a>
+
+    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/'" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/about-us'" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">About Us</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/register'" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="'/login'" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div id="veil" class="veil" (click)="closeExpendedBar()"></div>
 </div>

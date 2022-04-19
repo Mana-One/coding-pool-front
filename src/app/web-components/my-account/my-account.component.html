@@ -1,0 +1,80 @@
+<div id="accountContainer" (resized)="changeInfosDisposition($event)" class="container">
+  <div class="row">
+    <div id="userInfos" class="d-flex">
+      <div class="card">
+        <h2 class="card-title">User Informations</h2>
+        <div class="card-body m-auto px-0 w-75" style="display: grid">
+          <div>
+            <h3 class="info-title">Username</h3>
+            <h3>{{userInfos.username}}</h3>
+          </div>
+          <div>
+            <h3 class="info-title">email</h3>
+            <h3>{{userInfos.email}}</h3>
+          </div>
+          <div>
+            <h3 class="info-title">wallet</h3>
+            <h3>{{userInfos.wallet ? 'registered' : 'not yet registered'}}</h3>
+          </div>
+          <div>
+            <h3 class="info-title">role</h3>
+            <h3>{{userInfos.role}}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="separator" class="d-flex">
+      <img id="verticale-separator" class="verticale-separator" src="assets/images/verticale_waze_separator.svg">
+      <img id="horizontale-separator" class="horizontal-separator" src="assets/images/horizontale_waze_separator.svg">
+    </div>
+    <div id="changePassword" class="d-flex">
+      <div class="card">
+        <h2 class="card-title">Edit Password</h2>
+        <div class="card-body m-auto px-0 w-75" style="display: grid">
+          <form [formGroup]="changePasswordForm">
+            <div class="mb-2">
+              <mat-form-field class="w-100" appearance="fill">
+                <mat-label>Old Password</mat-label>
+                <input matInput [formControlName]="'oldPassword'" type="oldPassword" [type]="hideOldPassword ? 'password' : 'text'" autocomplete="false">
+                <mat-icon class="cursor" [style.color]="hideOldPassword ? 'black' : 'grey'"  (click)="showPassword('oldPassword')" matSuffix>remove_red_eye</mat-icon>
+                <mat-error>{{getFieldErrorMessage('oldPassword')}}</mat-error>
+              </mat-form-field>
+              <div class="mb-2">
+                <mat-form-field class="w-100" appearance="fill">
+                  <mat-label>New Password</mat-label>
+                  <input matInput [formControlName]="'newPassword'" [type]="hideNewPassword ? 'password' : 'text'" autocomplete="false">
+                  <mat-icon class="cursor" [style.color]="hideNewPassword ? 'black' : 'grey'"  (click)="showPassword('newPassword')" matSuffix>remove_red_eye</mat-icon>
+                  <mat-error>{{getFieldErrorMessage('newPassword')}}</mat-error>
+                </mat-form-field>
+              </div>
+              <div class="mb-2">
+                <mat-form-field class="w-100" appearance="fill">
+                  <mat-label>Confirm New Password</mat-label>
+                  <input matInput [formControlName]="'confirmNewPassword'" [type]="hideConfirmNewPassword ? 'password' : 'text'" autocomplete="false">
+                  <mat-icon class="cursor" [style.color]="hideConfirmNewPassword ? 'black' : 'grey'"  (click)="showPassword('confirmNewPassword')" matSuffix>remove_red_eye</mat-icon>
+                  <mat-error>{{getFieldErrorMessage('confirmNewPassword')}}</mat-error>
+                </mat-form-field>
+              </div>
+              <div>
+                <div class="mb-2">
+                  <div class="d-flex m-0">1 Capital Letter<mat-icon class="ml-auto">{{ hasMajLetter ?'check_circle': 'not_interested'}}</mat-icon></div>
+                  <div class="d-flex m-0">1 Lowercase Letter<mat-icon class="ml-auto">{{ hasMinLetter ?'check_circle': 'not_interested'}}</mat-icon></div>
+                  <div class="d-flex m-0">1 Digit<mat-icon class="ml-auto">{{ hasNumber ?'check_circle': 'not_interested'}}</mat-icon></div>
+                </div>
+              </div>
+              <div>
+                <button (click)="changeUserPassword()" [disabled]="isRequestingChangePassword" type="submit" class="btn btn-block btn-dark m-auto">
+                  <span *ngIf="!isRequestingChangePassword">Change Password</span>
+                  <mat-spinner *ngIf="isRequestingChangePassword" class="m-auto" [diameter]="30" color="warn"></mat-spinner>
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="card-message" class="mt-2 mb-auto card-error">
+        <h3 class="m-0">{{errorMessage}}</h3>
+      </div>
+    </div>
+  </div>
+</div>

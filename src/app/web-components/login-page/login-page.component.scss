@@ -1,8 +1,24 @@
+:host{
+  height: 100%;
+  display: contents;
+}
+
 .card{
   border: solid 2px white;
-  //background-color: #0A1929;
+//background-color: #0A1929;
   background-color: white;
   width: 366px;
+
+}
+
+.card-error{
+  background-color: red;
+  color: white;
+  margin: auto;
+  text-align: center;
+  border-radius: 5px;
+  opacity: 0;
+  transition: all 1s linear;
 }
 
 @media screen and (max-width: 400px) {
@@ -12,7 +28,7 @@
 
 }
 
-
+/*
 body {
   background:radial-gradient(ellipse at center, rgba(255,254,234,1) 0%, rgba(255,254,234,1) 35%, #B7E8EB 100%);
   overflow: hidden;
@@ -60,3 +76,4 @@ body {
     transform: translate3d(0,5px,0);
   }
 }
+*/

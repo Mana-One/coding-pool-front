@@ -1,0 +1,88 @@
+.accountContainer-mobile{
+  height: auto;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  .verticale-separator{
+    margin: auto;
+    width: 100%;
+    display: none;
+  }
+  .horizontal-separator{
+    width: 400px;
+    margin: 2rem auto;
+    display: block;
+  }
+}
+
+.accountContainer-desktop{
+  height: 100%;
+  .verticale-separator{
+    margin: auto;
+    width: 100%;
+    display: block;
+  }
+  .horizontal-separator{
+    width: 400px;
+    margin: 2rem auto;
+    display: none;
+  }
+}
+
+.container{
+  display: flex;
+}
+
+.row{
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.card{
+  border: solid 2px white;
+  background-color: white;
+  margin: auto;
+  width: 366px;
+}
+
+@media screen and (max-width: 400px) {
+  .card{
+    width: 100%;
+  }
+  .horizontal-separator{
+    width: 100%;
+  }
+
+}
+
+.info-title{
+  font-size: 1.5rem;
+  font-family: "Salsa";
+  border-bottom: solid #202e3c;
+}
+
+.card-title{
+  font-size: 2rem;
+  font-family: "Salsa";
+  text-align: center;
+}
+
+.cursor{
+  cursor: pointer;
+}
+
+.card-message{
+  margin: auto;
+  text-align: center;
+  border-radius: 5px;
+  opacity: 0;
+  transition: all 1s linear;
+  color: white;
+}
+
+.card-error{
+  background-color: red;
+}
+
+.card-success{
+  background-color: forestgreen;
+}

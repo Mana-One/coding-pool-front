@@ -4,7 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './web-components/home-page/home-page.component';
-import { LoginPageComponent } from './web-components/login-page/login-page.component';
 import { NotFoundPageComponent } from './web-components/not-found-page/not-found-page.component';
 import { FooterComponent } from './web-components/global-web-components/footer/footer.component';
 import { NavBarComponent } from './web-components/global-web-components/nav-bar/nav-bar.component';
@@ -14,27 +13,73 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatInputModule} from '@angular/material/input';
+import {ReactiveFormsModule} from '@angular/forms';
+import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {RegisterPageComponent} from './web-components/register-page/register-page.component';
+import {LoginPageComponent} from './web-components/login-page/login-page.component';
+import { AboutUsComponent } from './web-components/global-web-components/about-us/about-us.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {HttpTokenInterceptor} from './special-implementation/http-token-interceptor';
+import { ConnectedUserPageLayoutComponent } from './web-components/connected-user-page-layout/connected-user-page-layout.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatListModule} from '@angular/material/list';
+import { MyAccountComponent } from './web-components/my-account/my-account.component';
+import {AngularResizedEventModule} from 'angular-resize-event';
+import { DisconnectedPageLayoutComponent } from './web-components/disconnected-page-layout/disconnected-page-layout.component';
+import { BoardComponent } from './web-components/board/board.component';
+import { CodeEditorComponent } from './web-components/code-editor/code-editor.component';
+import { UserPageComponent } from './web-components/user-page/user-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomePageComponent,
     LoginPageComponent,
+    RegisterPageComponent,
     NotFoundPageComponent,
     FooterComponent,
-    NavBarComponent
+    NavBarComponent,
+    AboutUsComponent,
+    ConnectedUserPageLayoutComponent,
+    MyAccountComponent,
+    DisconnectedPageLayoutComponent,
+    BoardComponent,
+    CodeEditorComponent,
+    UserPageComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     NgbModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
     MatIconModule,
     MatSliderModule,
     MatInputModule,
+    ReactiveFormsModule,
+    SocialLoginModule,
+    MatProgressSpinnerModule,
+    MatSidenavModule,
+    MatListModule,
+    AngularResizedEventModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('307511357267-597g5h4tc0639950okcat16jof3v0aqr.apps.googleusercontent.com'),
+          },
+        ],
+      } as SocialAuthServiceConfig,
+    },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpTokenInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
