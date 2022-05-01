@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {AuthentificationService} from '../../services/authentification.service';
+import {ScrollService} from '../../services/scroll.service';
 
 @Component({
   selector: 'app-connected-user-page-layout',
@@ -14,10 +14,10 @@ export class ConnectedUserPageLayoutComponent implements OnInit {
   sideBarMode = 'side';
   backDrop = false;
   showReduce = true;
-
-  constructor(
-    private authentificationService: AuthentificationService
-  ) { }
+  mybutton;
+  content;
+  contents;
+  constructor(private scrollService: ScrollService) { }
 
   ngOnInit(): void {
     const dummyEvent = {
@@ -26,6 +26,9 @@ export class ConnectedUserPageLayoutComponent implements OnInit {
       }
     };
     this.onResizeScreen(dummyEvent);
+    this.mybutton = document.getElementById('btn-back-to-top');
+    this.content = document.getElementById('content');
+    this.contents = document.getElementById('contents');
   }
 
   @HostListener('window:resize', ['$event'])
@@ -74,7 +77,21 @@ export class ConnectedUserPageLayoutComponent implements OnInit {
     this.sideBarExpended = false;
   }
 
-  logout(): void {
-    this.authentificationService.logout();
+  scrollFunction(): void {
+    this.calculateScrollPercentage();
+    if (this.content.scrollTop > 20) {
+      this.mybutton.style.display = 'block';
+    } else {
+      this.mybutton.style.display = 'none';
+    }
+  }
+
+  backToTop(): void {
+    this.content.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  calculateScrollPercentage(): void{
+    const scrollPercent = (this.content.scrollTop / (this.contents.scrollHeight - this.content.offsetHeight)) * 100;
+    this.scrollService.scrollPage(scrollPercent);
   }
 }

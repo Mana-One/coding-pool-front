@@ -1,35 +1,35 @@
 export class ChangePassword {
-  private _oldPassword: string;
-  private _newPassword: string;
-  private _confirmPassword: string;
+  private oldPassword: string;
+  private newPassword: string;
+  private confirmPassword: string;
 
   constructor(oldPassword: string, newPassword: string, confirmPassword: string) {
-    this._oldPassword = oldPassword;
-    this._newPassword = newPassword;
-    this._confirmPassword = confirmPassword;
+    this.oldPassword = oldPassword;
+    this.newPassword = newPassword;
+    this.confirmPassword = confirmPassword;
   }
 
-  get oldPassword(): string {
-    return this._oldPassword;
+  get _oldPassword(): string {
+    return this.oldPassword;
   }
 
-  set oldPassword(value: string) {
-    this._oldPassword = value;
+  set _oldPassword(value: string) {
+    this.oldPassword = value;
   }
 
-  get newPassword(): string {
-    return this._newPassword;
+  get _newPassword(): string {
+    return this.newPassword;
   }
 
-  set newPassword(value: string) {
-    this._newPassword = value;
+  set _newPassword(value: string) {
+    this.newPassword = value;
   }
 
-  get confirmPassword(): string {
-    return this._confirmPassword;
+  get _confirmPassword(): string {
+    return this.confirmPassword;
   }
 
-  set confirmPassword(value: string) {
-    this._confirmPassword = value;
+  set _confirmPassword(value: string) {
+    this.confirmPassword = value;
   }
 }

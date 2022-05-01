@@ -1,25 +1,25 @@
 export class Login {
-  private _email: string;
-  private _password: string;
+  private email: string;
+  private password: string;
 
   constructor(email: string, password: string) {
-    this._email = email;
-    this._password = password;
+    this.email = email;
+    this.password = password;
   }
 
-  get email(): string {
-    return this._email;
+  get _email(): string {
+    return this.email;
   }
 
-  set email(value: string) {
-    this._email = value;
+  set _email(value: string) {
+    this.email = value;
   }
 
-  get password(): string {
-    return this._password;
+  get _password(): string {
+    return this.password;
   }
 
-  set password(value: string) {
-    this._password = value;
+  set _password(value: string) {
+    this.password = value;
   }
 }

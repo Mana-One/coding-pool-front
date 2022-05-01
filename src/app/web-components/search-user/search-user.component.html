@@ -1,0 +1,48 @@
+<div class="container h-100">
+
+  <div [formGroup]="userSearchForm" class="d-flex bg-light px-2 py-3 mb-5 rounded">
+    <img height="60px" src="assets/images/bouee.png">
+    <mat-form-field class="w-100 mx-4 d-block custom-wrapper" appearance="outline">
+      <input matInput [formControlName]="'userName'" type="text" placeholder="Find user ..."/>
+    </mat-form-field>
+  </div>
+
+  <div *ngIf="lastRequestResult">
+    <div class="post-card rounded" *ngFor='let user of users'>
+      <div class="row">
+        <div class="icone col-12 col-md-6">
+          <mat-icon><i class="material-icons custom-size">account_box</i></mat-icon>
+          <span class="span-no-left truncate name">{{user.username}}</span>
+        </div>
+        <div class="col-12 col-md-6 w-100">
+          <div class="mb-2">
+            <button [routerLink]="userService.isConnectedUserOwner(user.id) ? '/my-account' :'/user/'+user.id" class="btn btn-block btn-dark">See profile</button>
+            <button (click)="followUser(user.id)" class="btn btn-block btn-success">Follow</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-100 d-flex" *ngIf="searchingUsers">
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+
+  <div *ngIf="emptySearch" class="d-flex">
+    <span class="no-pub">Search around and find someone !</span>
+  </div>
+
+  <div *ngIf="noUsers" class="d-flex">
+    <span class="no-pub">There is no users for this research ...</span>
+  </div>
+
+  <div *ngIf="noMore" class="d-flex">
+    <span class="no-pub">There is no more users ...</span>
+  </div>
+
+  <div *ngIf="usersError">
+    <span class="no-pub d-block m-auto">Something went wrong ...</span>
+    <button class="btn btn-block btn-dark w-auto m-auto px-4 mt-2" (click)="retryGetUsers()">Retry</button>
+  </div>
+
+</div>

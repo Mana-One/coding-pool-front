@@ -62,3 +62,20 @@
     z-index: 5;
   }
 }
+
+#btn-back-to-top {
+  background-color: #19426c;
+  position: fixed;
+  bottom: 20px;
+  right: 40px;
+  display: none;
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  mat-icon{
+    display: flex;
+    margin: auto;
+    color: white;
+  }
+}
+

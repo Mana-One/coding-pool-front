@@ -1,11 +1,15 @@
-import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {retry} from 'rxjs/operators';
+import {retry, tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 
 @Injectable()
 export class HttpTokenInterceptor implements HttpInterceptor {
+
+  constructor(private router: Router) { }
+
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const API_TOKEN = localStorage.getItem('access_token');
     let request;
@@ -14,6 +18,19 @@ export class HttpTokenInterceptor implements HttpInterceptor {
     }else{
       request = httpRequest;
     }
-    return next.handle(request).pipe(retry(2));
+    return next.handle(request).pipe(
+      //retry(2)
+      tap(event => {
+        if (event instanceof HttpResponse) {
+          console.log(`HttpResponse for ${event.url}`);
+        }
+      }, error => {
+        if (error instanceof HttpErrorResponse) {
+          if (error.status === 401) {
+            this.router.navigate(['/logout']);
+          }
+        }
+      })
+    );
   }
 }

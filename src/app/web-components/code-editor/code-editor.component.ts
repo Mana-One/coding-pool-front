@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import * as ace from "ace-builds";
+import * as ace from 'ace-builds';
 @Component({
   selector: 'app-code-editor',
   templateUrl: './code-editor.component.html',

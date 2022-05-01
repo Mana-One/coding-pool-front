@@ -1,15 +1,15 @@
 export class PublicationCreation {
-  private _content: string;
+  private content: string;
 
   constructor(content: string) {
-    this._content = content;
+    this.content = content;
   }
 
-  get content(): string {
-    return this._content;
+  get _content(): string {
+    return this.content;
   }
 
-  set content(value: string) {
-    this._content = value;
+  set _content(value: string) {
+    this.content = value;
   }
 }

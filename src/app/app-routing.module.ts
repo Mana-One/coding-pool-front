@@ -12,9 +12,11 @@ import {AuthGuardDisconnectedService} from './special-implementation/auth-guard-
 import {DisconnectedPageLayoutComponent} from './web-components/disconnected-page-layout/disconnected-page-layout.component';
 import {CodeEditorComponent} from './web-components/code-editor/code-editor.component';
 import {BoardComponent} from './web-components/board/board.component';
+import {PublicationComponent} from './web-components/publication/publication.component';
+import {LogoutComponent} from './web-components/logout/logout.component';
+import {SearchUserComponent} from './web-components/search-user/search-user.component';
 
 const routes: Routes = [
-  /*
   { path: '', component: DisconnectedPageLayoutComponent,
     canActivate: [AuthGuardDisconnectedService],
     children: [
@@ -24,12 +26,17 @@ const routes: Routes = [
       { path: 'register', component: RegisterPageComponent },
     ]
   },
-   */
   { path: '', component: ConnectedUserPageLayoutComponent,
-    //canActivate: [AuthGuardConnectedService],
+    canActivate: [AuthGuardConnectedService],
     children: [
       { path: 'my-account', component: MyAccountComponent },
-      { path: 'board', component: BoardComponent },
+      { path: 'board', component: BoardComponent, data : { type: 'home'} },
+      { path: 'my-messages', component: BoardComponent, data : { type: 'me'} },
+      { path: 'user/:id', component: BoardComponent, data : { type: 'user'} },
+      { path: 'publication/:id', component: PublicationComponent },
+      { path: 'users', component: SearchUserComponent },
+      { path: 'program/:id', component: CodeEditorComponent },
+      { path: 'logout', component: LogoutComponent },
     ]
   },
 

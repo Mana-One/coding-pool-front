@@ -1,0 +1,129 @@
+<div class="container h-100">
+
+  <div class="post-card rounded">
+    <div *ngIf="publication" class="d-flex">
+      <div class="icone d-none d-md-block">
+        <a [routerLink]="userService.isConnectedUserOwner(publication.author.id) ? '/my-account' :'/user/'+publication.author.id" class="link">
+          <mat-icon><i class="material-icons custom-size">account_box</i></mat-icon>
+        </a>
+      </div>
+      <div class="ml-0 ml-md-2 w-100">
+        <div class="row d-flex justify-content-end mx-0 mt-0 mb-2 p-0">
+          <div class="col-6 col-md-8 d-grid mt-2 p-0 truncate-flex">
+            <div class="d-flex ">
+              <mat-icon class="d-md-none"><i class="material-icons">account_box</i></mat-icon>
+              <a [routerLink]="userService.isConnectedUserOwner(publication.author.id) ? '/my-account' :'/user/'+publication.author.id" class="link"><span class="span-no-left truncate">{{publication.author.username}}</span></a>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 d-grid mt-2 p-0">
+            <div class="d-flex">
+              <mat-icon><i class="material-icons">access_time</i></mat-icon>
+              <span>{{getDate(publication.createdAt)}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="publication-content mb-2">
+          {{publication.content}}
+        </div>
+        <div class="mt-3" [formGroup]="commentForm">
+          <mat-form-field class="w-100 m-auto d-block" appearance="outline">
+            <textarea [formControlName]="'comment'" style="height: 130px" matInput placeholder="Comment ..."></textarea>
+            <mat-error *ngIf="commentForm.invalid">Comment cannot be empty</mat-error>
+          </mat-form-field>
+          <button [disabled]="commentForm.invalid" (click)="commentPublication()" class="btn btn-dark btn-block">Comment</button>
+        </div>
+        <div class="row m-0 p-0 justify-content-between">
+          <div class="col-6 col-md-3 d-grid mt-2 p-0">
+            <div class="d-flex">
+              <mat-icon><i class="material-icons">textsms</i></mat-icon>
+              <span class="">{{publication.comments}}</span>
+            </div>
+          </div>
+          <div class="col-6 col-md-3 d-grid mt-2 p-0">
+            <button class="d-flex btn btn-block" (click)="like()" [ngClass]="{'btn-danger': userLikePublication,'btn-success': !userLikePublication}">
+              <mat-icon><i class="material-icons">thumb_up_alt</i></mat-icon>
+              <span>{{publication.likes}}</span>
+              <span *ngIf="!userLikePublication">Like</span>
+              <span *ngIf="userLikePublication">Unlike</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!publication && !publicationError" class="d-flex w-100">
+      <mat-spinner class="m-auto"></mat-spinner>
+    </div>
+    <div *ngIf="!publication && publicationError" class="d-flex w-100">
+      <p>{{publicationError}}</p>
+      <button class="btn btn-danger btn-block w-auto m-auto" (click)="getPublication()">Retry</button>
+    </div>
+  </div>
+
+  <div *ngIf="lastRequestResult">
+    <div class="post-card rounded" *ngFor='let comment of comments'>
+      <div class="d-flex">
+        <div class="icone d-none d-md-block">
+          <a [routerLink]="userService.isConnectedUserOwner(comment.leftBy.id) ? '/my-account' :'/user/' + comment.leftBy.id" class="link">
+            <mat-icon><i class="material-icons custom-size">account_box</i></mat-icon>
+          </a>
+        </div>
+        <div class="ml-0 ml-md-2 w-100">
+          <div class="row d-flex justify-content-end mx-0 mt-0 mb-2 p-0">
+            <div class="col-6 col-md-8 d-grid mt-2 p-0 truncate-flex">
+              <div class="d-flex ">
+                <mat-icon class="d-md-none"><i class="material-icons">account_box</i></mat-icon>
+                <a [routerLink]="userService.isConnectedUserOwner(comment.leftBy.id) ? '/my-account' :'/user/' + comment.leftBy.id" class="link"><span class="span-no-left truncate">{{comment.leftBy.username}}</span></a>
+              </div>
+            </div>
+            <div class="col-6 col-md-4 d-grid mt-2 p-0">
+              <div class="d-flex">
+                <mat-icon><i class="material-icons">access_time</i></mat-icon>
+                <span>{{getDate(comment.createdAt)}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="publication-content mb-2">
+            {{comment.content}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-100 d-flex" *ngIf="searchingComments">
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+
+  <div *ngIf="noComment" class="d-flex">
+    <span class="no-pub">There is no comments ...</span>
+  </div>
+
+  <div *ngIf="noMore" class="d-flex">
+    <span class="no-pub">There is no more comments ...</span>
+  </div>
+
+  <div *ngIf="commentError">
+    <span class="no-pub d-block m-auto">Something went wrong ...</span>
+    <button class="btn btn-block btn-dark w-auto m-auto px-4 mt-2" (click)="retryGetComments()">Retry</button>
+  </div>
+
+</div>
+
+<ng-template #awaitingCommentRequestSend>
+  <h1 mat-dialog-title class="card-title">Creation of the comment ..</h1>
+  <div class="d-flex" mat-dialog-content>
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #creationCommentRequestResult>
+  <h1 mat-dialog-title class="card-title">{{addCommentError ? 'Error' : 'Success'}}</h1>
+  <div class="d-flex" mat-dialog-content>
+    <span class="text-center">
+      {{addCommentError ? addCommentError: 'The comment has successfully been created !'}}
+    </span>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
+  </div>
+</ng-template>

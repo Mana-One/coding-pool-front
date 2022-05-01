@@ -1,0 +1,79 @@
+:host{
+  height: 100%;
+  display: contents;
+}
+
+.container{
+  height: 100%;
+  margin: auto;
+  display: flex;
+}
+
+.card{
+  border: solid 2px white;
+  background-color: white;
+  margin: auto;
+}
+.card-body{
+  width: 90%;
+  display: flex !important;
+}
+
+@media screen and (max-width: 400px) {
+  .card{
+    width: 100%;
+  }
+
+  .frise{
+    img{
+      width: 100%;
+    }
+  }
+
+}
+
+@media screen and (min-width: 400px) {
+  .frise{
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    img{
+      width: 75%;
+      margin-right: auto;
+      margin-left: auto;
+    }
+  }
+}
+
+.card-title{
+  font-size: 2rem;
+  font-family: "Salsa";
+  text-align: center;
+}
+
+.info-title{
+  font-size: 1.5rem;
+  font-family: "Salsa";
+  border-bottom: solid #202e3c;
+  width: fit-content;
+}
+
+
+.frise-top{
+  margin-bottom: 2rem;
+}
+
+.frise-bottom{
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  -webkit-transform:rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+h3{
+  width: fit-content;
+  font-size: 1.2rem;
+}

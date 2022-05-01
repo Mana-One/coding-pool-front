@@ -4,12 +4,15 @@ import {Login} from '../models/login';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {Router} from '@angular/router';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthentificationService {
+
+  helper = new JwtHelperService();
 
   constructor(
     private http: HttpClient,
@@ -21,11 +24,28 @@ export class AuthentificationService {
   }
 
   logout(): void{
-    localStorage.removeItem('access_token');
+    if (localStorage.getItem('access_token')) {
+      localStorage.removeItem('access_token');
+    }
     this.router.navigate(['/']);
   }
 
   isAuthenticated(): boolean {
     return localStorage.getItem('access_token') !== null;
+  }
+
+  getToken(): any {
+    return localStorage.getItem('access_token');
+  }
+
+  saveToken(token: any): void {
+    localStorage.setItem('access_token', token);
+  }
+
+  removeIfTokenExpired(): void{
+    const token = localStorage.getItem('access_token');
+    if (token && this.helper.isTokenExpired(token)){
+      this.logout();
+    }
   }
 }

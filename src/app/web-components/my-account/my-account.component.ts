@@ -54,7 +54,7 @@ export class MyAccountComponent implements OnInit {
     this.userService.getConnectedUserInfo().subscribe(
       value => {
         this.userInfos = value;
-      },error => {
+      }, error => {
 
       });
   }

@@ -1,0 +1,138 @@
+:host{
+  height: 100%;
+  display: contents;
+}
+
+.container{
+  padding: 2rem;
+}
+
+.post-card{
+  padding: 1rem;
+  background: white;
+  margin-bottom: 3rem;
+  .publication-content{
+    width: 100%;
+    margin: auto 1rem;
+    height: fit-content;
+    text-align: justify;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .publication-access{
+    margin: auto .5rem;
+  }
+}
+
+.icone{
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  display: flex;
+  mat-icon{
+    width: 60px;
+    height: 60px;
+    .custom-size{
+      font-size: 60px;
+    }
+  }
+}
+
+.d-grid{
+  display: grid;
+  mat-icon{
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  span{
+    width: fit-content;
+    height: fit-content;
+    font-size: 18px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: .8rem;
+  }
+}
+
+.link{
+  color: black;
+  text-decoration: underline;
+}
+
+.false-input{
+  height: 50px;
+  margin: auto 2rem;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #cacaca;
+  opacity: 0.4;
+  display: flex;
+  transition: 0.2s;
+  span{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+  }
+}
+
+.false-input:hover{
+  opacity: 0.8;
+}
+
+.link-user{
+  color: rgba(0, 0, 0, 0.87);
+  transition: 0.2s;
+}
+
+.link-user:hover{
+  color: rgba(50, 50, 50, 0.87);
+}
+
+.no-pub{
+  width: 100%;
+  font-size: 2.5rem;
+  color: white;
+  margin: auto;
+  line-height: normal;
+  text-align: center;
+}
+
+.card-title{
+  font-size: 2rem;
+  font-family: "Salsa";
+  text-align: center;
+}
+
+.my-class .cdk-global-overlay-wrapper {
+  height: 50% !important;
+  width: 50% !important;
+  border-radius: 10px;
+  background: lightcyan;
+  color: #039be5;
+}
+
+
+::ng-deep .dialog-container-custom {
+  width: 50vw;
+  .mat-dialog-container{
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  ::ng-deep .dialog-container-custom {
+    width: 80vw;
+    .mat-dialog-container{
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  ::ng-deep .dialog-container-custom {
+    width: 100vw;
+    .mat-dialog-container{
+    }
+  }
+}

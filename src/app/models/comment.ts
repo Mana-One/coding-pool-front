@@ -1,25 +1,25 @@
 export class Comment {
-  private _content: string;
-  private _publicationId: string;
+  private content: string;
+  private publicationId: string;
 
   constructor(content: string, publicationId: string) {
-    this._content = content;
-    this._publicationId = publicationId;
+    this.content = content;
+    this.publicationId = publicationId;
   }
 
-  get content(): string {
-    return this._content;
+  get _content(): string {
+    return this.content;
   }
 
-  set content(value: string) {
-    this._content = value;
+  set _content(value: string) {
+    this.content = value;
   }
 
-  get publicationId(): string {
-    return this._publicationId;
+  get _publicationId(): string {
+    return this.publicationId;
   }
 
-  set publicationId(value: string) {
-    this._publicationId = value;
+  set _publicationId(value: string) {
+    this.publicationId = value;
   }
 }

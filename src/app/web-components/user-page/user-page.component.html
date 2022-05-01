@@ -1,1 +1,65 @@
-<p>user-page works!</p>
+<div class="m-auto">
+
+  <mat-accordion *ngIf="userStats">
+    <mat-expansion-panel [expanded]="panelOpenState">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h3 class="info-title p-0 m-0">{{userStats.username}}</h3>
+        </mat-panel-title>
+        <mat-panel-description>
+          <div class="my-auto">
+            Click to see some general informations
+          </div>
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="m-auto px-0 row">
+        <div class="col-12 d-flex">
+          <h3 class="info-title">Id: </h3>
+          <h3 class="ml-2">{{userStats.id}}</h3>
+        </div>
+        <div class="col-12 col-md-6 d-flex">
+          <h3 class="info-title">Username:</h3>
+          <h3 class="ml-2">{{userStats.username}}</h3>
+        </div>
+        <div class="col-12 col-md-6 d-flex">
+          <h3 class="info-title">Followers:</h3>
+          <h3 class="ml-2">{{userStats.followers}}</h3>
+        </div>
+        <div class="col-12 col-md-6 d-flex">
+          <h3 class="info-title">Following:</h3>
+          <h3 class="ml-2">{{userStats.following}}</h3>
+        </div>
+        <div class="col-12 col-md-6 d-flex">
+          <h3 class="info-title">Programs:</h3>
+          <h3 class="ml-2">{{userStats.programs}}</h3>
+        </div>
+        <div class="col-12 col-md-6 d-flex">
+          <h3 class="info-title">Competiton joined:</h3>
+          <h3 class="ml-2">{{userStats.competitions_entered}}</h3>
+        </div>
+        <div class="col-12 col-md-6 d-flex">
+          <h3 class="info-title">Competiton won:</h3>
+          <h3 class="ml-2">{{userStats.competitions_won}}</h3>
+        </div>
+      </div>
+
+    </mat-expansion-panel>
+    <div *ngIf="notMe" class="mt-1">
+      <button class="btn btn-block btn-success">follow</button>
+    </div>
+  </mat-accordion>
+
+  <div *ngIf="!userStats && !error" class="w-100 d-flex">
+    <mat-spinner [diameter]="40" class="m-auto"></mat-spinner>
+  </div>
+
+  <div *ngIf="error" class="w-100">
+    <p class="mx-auto mb-2 text-center text-white">{{error}}</p>
+    <button (click)="getUserState()" class="btn btn-danger btn-block w-auto m-auto">Retry</button>
+  </div>
+
+  <div class="py-2 frise frise-bottom">
+    <img src="assets/images/frisePsi_original.svg">
+  </div>
+</div>

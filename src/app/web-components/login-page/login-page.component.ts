@@ -4,6 +4,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthentificationService} from '../../services/authentification.service';
 import {Login} from '../../models/login';
 import {Router} from '@angular/router';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-login-page',
@@ -21,7 +22,8 @@ export class LoginPageComponent implements OnInit {
   constructor(
     private authentificationService: AuthentificationService,
     private socialAuthService: SocialAuthService,
-    private router: Router
+    private router: Router,
+    private userSevice: UserService
   ) { }
 
   ngOnInit(): void {
@@ -51,7 +53,9 @@ export class LoginPageComponent implements OnInit {
       this.isRequestingLogin = true;
       this.authentificationService.login(new Login(formValue.email, formValue.password)).subscribe(
         token => {
-          localStorage.setItem('access_token', token.access_token);
+          console.log(token)
+          this.authentificationService.saveToken(token.access_token);
+          this.userSevice.setConnectedUserIdFromToken(token.access_token);
           this.router.navigate(['/my-account']);
         },
         error => {

@@ -30,6 +30,13 @@ import { DisconnectedPageLayoutComponent } from './web-components/disconnected-p
 import { BoardComponent } from './web-components/board/board.component';
 import { CodeEditorComponent } from './web-components/code-editor/code-editor.component';
 import { UserPageComponent } from './web-components/user-page/user-page.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {InfiniteScrollModule} from 'ngx-infinite-scroll';
+import { PublicationComponent } from './web-components/publication/publication.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { LogoutComponent } from './web-components/logout/logout.component';
+import { SearchUserComponent } from './web-components/search-user/search-user.component';
+import { PortfolioComponent } from './web-components/portfolio/portfolio.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +54,10 @@ import { UserPageComponent } from './web-components/user-page/user-page.componen
     BoardComponent,
     CodeEditorComponent,
     UserPageComponent,
+    PublicationComponent,
+    LogoutComponent,
+    SearchUserComponent,
+    PortfolioComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +75,9 @@ import { UserPageComponent } from './web-components/user-page/user-page.componen
     MatSidenavModule,
     MatListModule,
     AngularResizedEventModule,
+    MatDialogModule,
+    InfiniteScrollModule,
+    MatExpansionModule,
   ],
   providers: [
     {

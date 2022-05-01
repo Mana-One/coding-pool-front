@@ -13,6 +13,14 @@
           <mat-icon mat-list-icon><i class="material-icons">textsms</i></mat-icon>
           <span class="text-link" mat-line>Board</span>
         </mat-list-item>
+        <mat-list-item [routerLink]="['/my-messages']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon mat-list-icon><i class="material-icons">textsms</i></mat-icon>
+          <span class="text-link" mat-line>My messages</span>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/users']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
+          <span class="text-link" mat-line>Users</span>
+        </mat-list-item>
         <mat-list-item [routerLink]="['/my-account']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
           <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
           <span class="text-link" mat-line>My Account</span>
@@ -21,7 +29,7 @@
           <mat-icon mat-list-icon><i class="material-icons">account_balance_wallet</i></mat-icon>
           <span class="text-link" mat-line>Wallet</span>
         </mat-list-item>
-        <mat-list-item (click)="logout()">
+        <mat-list-item [routerLink]="['/logout']">
           <mat-icon mat-list-icon><i class="material-icons">login</i></mat-icon>
           <span class="text-link" mat-line>Logout</span>
         </mat-list-item>
@@ -29,7 +37,6 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
-
       <mat-sidenav-container [hasBackdrop]="false" class="mat-typography w-100 h-100 sidebar-bg" autosize>
         <mat-sidenav [opened]="sideBarHalfExpended" [mode]="sideBarMode" [position]="sideBarPosition">
           <div class="logo-container">
@@ -42,19 +49,30 @@
             <mat-list-item [routerLink]="['/board']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
               <mat-icon mat-list-icon><i class="material-icons">textsms</i></mat-icon>
             </mat-list-item>
+            <mat-list-item [routerLink]="['/my-messages']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+              <mat-icon mat-list-icon><i class="material-icons">textsms</i></mat-icon>
+            </mat-list-item>
+            <mat-list-item [routerLink]="['/users']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+              <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
+            </mat-list-item>
             <mat-list-item [routerLink]="['/my-account']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
               <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
             </mat-list-item>
             <mat-list-item [routerLink]="['/']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
               <mat-icon mat-list-icon><i class="material-icons">account_balance_wallet</i></mat-icon>
             </mat-list-item>
-            <mat-list-item (click)="logout()">
+            <mat-list-item [routerLink]="['/logout']">
               <mat-icon mat-list-icon><i class="material-icons">login</i></mat-icon>
             </mat-list-item>
           </mat-nav-list>
         </mat-sidenav>
-        <mat-sidenav-content class="margin-tablet">
-          <div class="main-panel">
+        <mat-sidenav-content class="margin-tablet" (scroll)="scrollFunction()" id="content">
+
+          <button class="btn" id="btn-back-to-top" (click)="backToTop()">
+            <mat-icon> arrow_upward </mat-icon>
+          </button>
+
+          <div class="main-panel" id="contents">
             <nav class="navbar navbar-dark bg-dark nav-show">
               <button class="navbar-toggler" type="button" (click)="extendSideBarfast()">
                 <span class="navbar-toggler-icon"></span>
