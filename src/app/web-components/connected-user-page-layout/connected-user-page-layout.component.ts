@@ -1,12 +1,13 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {AfterContentInit, AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
 import {ScrollService} from '../../services/scroll.service';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'app-connected-user-page-layout',
   templateUrl: './connected-user-page-layout.component.html',
   styleUrls: ['./connected-user-page-layout.component.scss']
 })
-export class ConnectedUserPageLayoutComponent implements OnInit {
+export class ConnectedUserPageLayoutComponent implements OnInit, AfterContentInit {
 
   sideBarHalfExpended = false;
   sideBarExpended = true;
@@ -17,18 +18,44 @@ export class ConnectedUserPageLayoutComponent implements OnInit {
   mybutton;
   content;
   contents;
-  constructor(private scrollService: ScrollService) { }
+  scrollHiddenPages = ['/program'];
+  scrollHidden = false;
+
+  constructor(
+    private scrollService: ScrollService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+    this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        this.isScrollHidden();
+      }
+    });
     const dummyEvent = {
       target: {
         innerWidth: window.innerWidth
       }
     };
     this.onResizeScreen(dummyEvent);
-    this.mybutton = document.getElementById('btn-back-to-top');
     this.content = document.getElementById('content');
     this.contents = document.getElementById('contents');
+  }
+
+  ngAfterContentInit(): void {
+    this.isScrollHidden();
+  }
+
+  isScrollHidden(): void {
+    const url = this.router.url;
+    this.scrollHiddenPages.forEach(value => {
+      if (url.includes(value)){
+        this.scrollHidden = true;
+      }
+    });
+    if (this.scrollHidden === false){
+      this.mybutton = document.getElementById('btn-back-to-top');
+    }
   }
 
   @HostListener('window:resize', ['$event'])
@@ -78,11 +105,13 @@ export class ConnectedUserPageLayoutComponent implements OnInit {
   }
 
   scrollFunction(): void {
-    this.calculateScrollPercentage();
-    if (this.content.scrollTop > 20) {
-      this.mybutton.style.display = 'block';
-    } else {
-      this.mybutton.style.display = 'none';
+    if (this.scrollHidden === false){
+      this.calculateScrollPercentage();
+      if (this.content.scrollTop > 20) {
+        this.mybutton.style.display = 'block';
+      } else {
+        this.mybutton.style.display = 'none';
+      }
     }
   }
 
@@ -94,4 +123,5 @@ export class ConnectedUserPageLayoutComponent implements OnInit {
     const scrollPercent = (this.content.scrollTop / (this.contents.scrollHeight - this.content.offsetHeight)) * 100;
     this.scrollService.scrollPage(scrollPercent);
   }
+
 }

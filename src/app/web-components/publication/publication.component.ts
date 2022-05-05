@@ -36,7 +36,6 @@ export class PublicationComponent implements OnInit {
   offset = 0;
   limit = 10;
   commentForm: FormGroup;
-  userLikePublication = false;
 
   @ViewChild('awaitingCommentRequestSend', { static: true }) awaitingCommentRequestSend: TemplateRef<any>;
   @ViewChild('creationCommentRequestResult', { static: true }) creationCommentRequestResult: TemplateRef<any>;
@@ -131,15 +130,15 @@ export class PublicationComponent implements OnInit {
   }
 
   like(): void {
-    if (this.userLikePublication){
+    if (this.publication.isLiked){
       this.socialNetworkService.unLikePublication(this.publicationId).subscribe(value => {
         this.publication.likes--;
-        this.userLikePublication = !this.userLikePublication;
+        this.publication.isLiked = !this.publication.isLiked;
       }, error => {});
     }else {
       this.socialNetworkService.likePublication(this.publicationId).subscribe(value => {
         this.publication.likes++;
-        this.userLikePublication = !this.userLikePublication;
+        this.publication.isLiked = !this.publication.isLiked;
       }, error => {});
     }
   }

@@ -1,12 +1,13 @@
 import {Author, PaginatedRequestContentComment, PaginatedRequestContentPublication} from './paginatedRequestContentPublication';
+import {Publication} from './publication';
 
 export class PaginatedRequestResultPublication {
   public total: number;
   public previous: string;
   public next: string;
-  public data: PaginatedRequestContentPublication[];
+  public data: Publication[];
 
-  constructor(total: number, previous: string, next: string, data: PaginatedRequestContentPublication[]) {
+  constructor(total: number, previous: string, next: string, data: Publication[]) {
     this.total = total;
     this.previous = previous;
     this.next = next;

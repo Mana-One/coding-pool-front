@@ -37,6 +37,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { LogoutComponent } from './web-components/logout/logout.component';
 import { SearchUserComponent } from './web-components/search-user/search-user.component';
 import { PortfolioComponent } from './web-components/portfolio/portfolio.component';
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -78,6 +80,8 @@ import { PortfolioComponent } from './web-components/portfolio/portfolio.compone
     MatDialogModule,
     InfiniteScrollModule,
     MatExpansionModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
   providers: [
     {

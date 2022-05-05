@@ -9,6 +9,7 @@ import {Observable} from 'rxjs';
 import {ActivatedRoute} from '@angular/router';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../../services/user.service';
+import {Publication} from '../../models/publication';
 
 @Component({
   selector: 'app-board',
@@ -23,7 +24,7 @@ export class BoardComponent implements OnInit {
 
   type: string;
   userId: string;
-  publications: PaginatedRequestContentPublication[] = [];
+  publications: Publication[] = [];
   lastRequestResult: PaginatedRequestResultPublication;
   alreadyScrolledBottom = false;
   isFirstGet = true;

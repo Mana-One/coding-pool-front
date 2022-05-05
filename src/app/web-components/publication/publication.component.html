@@ -40,11 +40,11 @@
             </div>
           </div>
           <div class="col-6 col-md-3 d-grid mt-2 p-0">
-            <button class="d-flex btn btn-block" (click)="like()" [ngClass]="{'btn-danger': userLikePublication,'btn-success': !userLikePublication}">
+            <button class="d-flex btn btn-block" (click)="like()" [ngClass]="{'btn-danger': publication.isLiked,'btn-success': !publication.isLiked}">
               <mat-icon><i class="material-icons">thumb_up_alt</i></mat-icon>
               <span>{{publication.likes}}</span>
-              <span *ngIf="!userLikePublication">Like</span>
-              <span *ngIf="userLikePublication">Unlike</span>
+              <span *ngIf="!publication.isLiked">Like</span>
+              <span *ngIf="publication.isLiked">Unlike</span>
             </button>
           </div>
         </div>

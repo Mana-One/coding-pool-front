@@ -68,7 +68,7 @@
         </mat-sidenav>
         <mat-sidenav-content class="margin-tablet" (scroll)="scrollFunction()" id="content">
 
-          <button class="btn" id="btn-back-to-top" (click)="backToTop()">
+          <button *ngIf="scrollHidden === false" class="btn" id="btn-back-to-top" (click)="backToTop()">
             <mat-icon> arrow_upward </mat-icon>
           </button>
 
