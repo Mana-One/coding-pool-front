@@ -1,10 +1,14 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {ChangePassword} from '../../models/change-password';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {ResizedEvent} from 'angular-resize-event';
 import {UserInfos} from '../../models/user-infos';
+import {MatDialog} from '@angular/material/dialog';
+import {RegisterService} from '../../services/register.service';
+import {ProgramCreation} from '../../models/program-creation';
+import {EditAccount} from '../../models/edit-account';
 
 @Component({
   selector: 'app-my-account',
@@ -23,12 +27,24 @@ export class MyAccountComponent implements OnInit {
   errorMessage = '';
   userInfos = new UserInfos('null', 'null', 'null', 'null', 'null');
   changePasswordAttemptFailed = false;
+  modifyAccountError: string;
+  editAccountForm: FormGroup;
+  modifyAccountSuccess = false;
+
+  @ViewChild('ModifyAccountForm', { static: true }) ModifyAccountForm: TemplateRef<any>;
+  @ViewChild('awaitingModifyAccount', { static: true }) awaitingModifyAccount: TemplateRef<any>;
+  @ViewChild('ModifyAccountRequestResult', { static: true }) ModifyAccountRequestResult: TemplateRef<any>;
+
+
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private dialog: MatDialog,
+    private registerService: RegisterService
   ) { }
 
   ngOnInit(): void {
     this.initChangePasswordForm();
+    this.initEditAccountForm();
     this.getUserInfos();
     this.changePasswordForm.controls.confirmNewPassword.valueChanges.pipe(
       debounceTime(1000),
@@ -48,6 +64,24 @@ export class MyAccountComponent implements OnInit {
         this.checkPasswordRequirements(value);
       });
 
+    this.editAccountForm.controls.newUserName.valueChanges.pipe(
+      debounceTime(1000),
+      distinctUntilChanged()
+    ).subscribe(
+      value => {
+        this.registerService.checkUserName(this.editAccountForm.controls.newUserName.value).subscribe(
+          response => {
+            if (response.isUsernameUsed){
+              this.editAccountForm.controls.newUserName.setErrors({usedUsername: true});
+            }else{
+              this.editAccountForm.controls.newUserName.setErrors({usedUsername: null});
+              this.editAccountForm.controls.newUserName.updateValueAndValidity();
+            }
+          }, error => {
+            console.log(error);
+          });
+      });
+
   }
 
   getUserInfos(): void {
@@ -64,6 +98,13 @@ export class MyAccountComponent implements OnInit {
       oldPassword: new FormControl('', [Validators.required]),
       newPassword: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(32), Validators.pattern('^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$')]),
       confirmNewPassword: new FormControl('', [Validators.required]),
+    });
+  }
+
+  initEditAccountForm(): void{
+    this.editAccountForm = new FormGroup({
+      newUserName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
+      newEmail: new FormControl('', [Validators.required, Validators.email]),
     });
   }
 
@@ -141,6 +182,22 @@ export class MyAccountComponent implements OnInit {
     }
   }
 
+  getFieldErrorMessageEditAccount(control: string): string{
+    if (this.editAccountForm.controls[control].hasError('required')) {
+      return 'this field is required';
+    } else if (this.editAccountForm.controls[control].hasError('minlength')){
+      return this.editAccountForm.controls[control].errors.minlength.requiredLength + ' characters min';
+    } else if (this.editAccountForm.controls[control].hasError('maxlength')){
+      return this.editAccountForm.controls[control].errors.maxlength.requiredLength + ' characters max';
+    } else if (this.editAccountForm.controls[control].hasError('email')){
+      return 'e-mail format is not valid';
+    } else if (this.editAccountForm.controls[control].hasError('usedUsername')){
+      return 'this username is already used';
+    } else{
+      return '';
+    }
+  }
+
   showPassword(password: string): void {
     switch (password) {
       case 'oldPassword':
@@ -153,5 +210,48 @@ export class MyAccountComponent implements OnInit {
         this.hideConfirmNewPassword = !this.hideConfirmNewPassword;
         break;
     }
+  }
+
+  openDialog(dialog: any): void{
+    this.dialog.closeAll();
+    this.dialog.open(dialog, {disableClose: true});
+  }
+
+  closePopUp(): void {
+    this.dialog.closeAll();
+    if (this.modifyAccountSuccess){
+      this.initEditAccountForm();
+      this.modifyAccountSuccess = false;
+      location.reload();
+    }
+    setTimeout(() => {
+      this.modifyAccountError = null;
+    }, 500);
+  }
+
+
+  openEditAccountDialog(): void {
+    this.openDialog(this.ModifyAccountForm);
+  }
+
+
+  editAccount(): void {
+    const newUsername = this.editAccountForm.controls.newUserName.value;
+    const newEmail = this.editAccountForm.controls.newEmail.value;
+    this.openDialog(this.awaitingModifyAccount);
+    this.userService.changeUserInformations(new EditAccount(newUsername, newEmail)).subscribe(
+      value => {
+        this.modifyAccountSuccess = true;
+        this.editAccountForm.controls.newUserName.setValue('');
+        this.editAccountForm.controls.newEmail.setValue('');
+        this.editAccountForm.markAsUntouched();
+        this.openDialog(this.ModifyAccountRequestResult);
+      },
+      error => {
+        console.log(error);
+        this.modifyAccountError = error.message;
+        this.openDialog(this.ModifyAccountRequestResult);
+      }
+    );
   }
 }

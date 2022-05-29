@@ -1,0 +1,136 @@
+<div class="container h-100">
+  <button *ngIf="isAdmin" class="btn btn-block btn-success mb-4 w-auto" (click)="openContestCreationForm()">
+    <div class="d-flex">
+      <mat-icon> create_new_folder </mat-icon>
+      <p class="p-0 my-0 ml-2">Create a contest</p>
+    </div>
+  </button>
+
+  <div class="post-card rounded">
+    <mat-radio-group aria-label="Select an option" color="primary" class="row w-100" (change)="getContestWithStatus($event)">
+      <div class="col-12 col-md-4 ">
+        <mat-radio-button class="salsa" [checked]="true" value="scheduled">Scheduled</mat-radio-button>
+      </div>
+      <div class="col-12 col-md-4">
+        <mat-radio-button class="salsa" value="current">Current</mat-radio-button>
+      </div>
+      <div class="col-12 col-md-4">
+        <mat-radio-button class="salsa" value="ended">Ended</mat-radio-button>
+      </div>
+    </mat-radio-group>
+
+  </div>
+
+  <div class="row p-0 m-0" *ngIf="lastRequestResult">
+    <div class="post-card rounded col-12 col-md-6" *ngFor='let contest of contest'>
+      <div class="row">
+        <div class="col-12 w-100">
+          <div class="d-flex ml-auto" style="width: fit-content;">
+            <span class="mr-1 font-weight-bold salsa"><i>from</i> {{getDate(contest.startDate)}} <i>to</i> {{getDate(contest.endDate)}}</span>
+            <mat-icon><i class="material-icons">access_time</i></mat-icon>
+          </div>
+        </div>
+        <div class="icone col-12">
+          <mat-icon><i class="material-icons custom-size">folder</i></mat-icon>
+          <span class="truncate name">{{contest.title}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="w-100 d-flex" *ngIf="searchingContests">
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+
+  <div *ngIf="noContest" class="d-flex">
+    <span class="no-pub">There is no contest ...</span>
+  </div>
+
+  <div *ngIf="noMore" class="d-flex">
+    <span class="no-pub">There is no more contest ...</span>
+  </div>
+
+  <div *ngIf="contestError">
+    <span class="no-pub d-block m-auto">Something went wrong ...</span>
+    <button class="btn btn-block btn-dark w-auto m-auto px-4 mt-2" (click)="retryGetContest()">Retry</button>
+  </div>
+</div>
+
+<ng-template #creationContestForm>
+  <h1 mat-dialog-title class="card-title">Create a contest !</h1>
+  <div class="d-flex row" mat-dialog-content>
+    <div class="col-12" [formGroup]="contestCreationForm">
+
+      <mat-form-field class="w-100 d-block mb-2" appearance="outline">
+        <input matInput [formControlName]="'contestName'" type="text" placeholder="Contest name ..."/>
+        <mat-error *ngIf="contestCreationForm.controls.contestName.hasError('required')">This field is required</mat-error>
+        <mat-error *ngIf="contestCreationForm.controls.contestName.hasError('minlength')">Minimal length is 3 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="mb-2 w-100" appearance="fill">
+        <mat-label>Contest period</mat-label>
+
+        <mat-date-range-input
+          [rangePicker]="periodPicker" [min]="today">
+          <input matStartDate matInput [placeholder]="'MM/DD/YYYY'"  [formControlName]="'startDate'">
+          <input matEndDate matInput [placeholder]="'MM/DD/YYYY'" [formControlName]="'endDate'">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="periodPicker"></mat-datepicker-toggle>
+        <mat-date-range-picker #periodPicker></mat-date-range-picker>
+        <mat-error *ngIf="contestCreationForm.controls.startDate.hasError('required')">This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 d-block mb-2" appearance="fill">
+        <mat-label>Code Langage</mat-label>
+        <mat-select name="programs" [formControlName]="'programLanguageId'">
+          <mat-option *ngFor="let code of codeLanguages" [value]="code.id">
+            {{code.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="contestCreationForm.controls.programLanguageId.hasError('required')">This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 d-block mb-2" appearance="outline">
+        <textarea matInput [formControlName]="'description'" type="text" placeholder="Description ..."></textarea>
+        <mat-error *ngIf="contestCreationForm.controls.description.hasError('required')">This field is required</mat-error>
+        <mat-error *ngIf="contestCreationForm.controls.description.hasError('minlength')">Minimal length is 20 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 d-block mb-2" appearance="outline">
+        <input matInput [formControlName]="'input'" type="text" placeholder="input  ..."/>
+        <mat-error *ngIf="contestCreationForm.controls.input.hasError('required')">This field is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 d-block mb-2" appearance="outline">
+        <input matInput [formControlName]="'output'" type="text" placeholder="expected output ..."/>
+        <mat-error *ngIf="contestCreationForm.controls.output.hasError('required')">This field is required</mat-error>
+      </mat-form-field>
+
+      <p class="error" *ngIf="codeLanguages.length == 0">Error: Cannot create a program because languages are not available</p>
+    </div>
+    <div class="col-12 d-flex mt-2">
+      <button class="btn btn-block btn-dark py-2 mr-2 my-0" (click)="closePopUp()">Cancel</button>
+      <button class="btn btn-block btn-success py-2 ml-2 my-0" [disabled]="contestCreationForm.invalid || codeLanguages.length < 1" (click)="createContest()">Create</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #awaitingCreationContest>
+  <h1 mat-dialog-title class="card-title">Creating the program ..</h1>
+  <div class="d-flex" mat-dialog-content>
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #creationContestRequestResult>
+  <h1 mat-dialog-title class="card-title">{{createContestError ? 'Error' : 'Success'}}</h1>
+  <div class="d-flex" mat-dialog-content>
+    <span class="text-center">
+      {{createContestError ? createContestError: 'The contest has successfully been created !'}}
+    </span>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
+  </div>
+</ng-template>

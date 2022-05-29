@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Login} from '../models/login';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {CodeLanguage} from '../models/code-language';
 import {ProgramSubmission} from '../models/program-submission';
 import {SubmissionResult} from '../models/submission-result';
+import {PaginatedRequestResultPrograms} from '../models/paginated-request-result-publication';
+import {ProgramCreation} from '../models/program-creation';
 
 @Injectable({
   providedIn: 'root'
@@ -16,15 +17,23 @@ export class ProgramService {
     private http: HttpClient,
   ) { }
 
-  createProgram(login: Login): Observable<any>{
-    return this.http.post( environment.api_url + '/programs', null);
+  createProgram(program: ProgramCreation): Observable<any>{
+    return this.http.post( environment.api_url + '/programs', program);
   }
 
-  getMyPortfolio(limit: number, offset: number): Observable<any>{
-    return this.http.get( environment.api_url + `/programs/portfolio/me?limit=${limit}&offset=${offset}`);
+  getMyPortfolioPrograms(limit: number, offset: number): Observable<PaginatedRequestResultPrograms>{
+    return this.http.get<PaginatedRequestResultPrograms>( environment.api_url + `/programs/portfolio/me?limit=${limit}&offset=${offset}`);
   }
 
-  getProgram(programId: string): Observable<any>{
+  getNextPortfolioPrograms(request: string): Observable<PaginatedRequestResultPrograms>{
+    return this.http.get<PaginatedRequestResultPrograms>(request);
+  }
+
+  getUserPortfolioPrograms(userId: string, limit: number, offset: number): Observable<PaginatedRequestResultPrograms>{
+    return this.http.get<PaginatedRequestResultPrograms>( environment.api_url + `/programs/portfolio/?authorId=${userId}&limit=${limit}&offset=${offset}`);
+  }
+
+    getProgram(programId: string): Observable<any>{
     return this.http.get( environment.api_url + '/programs/' + programId);
   }
 

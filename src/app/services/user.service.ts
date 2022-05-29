@@ -7,6 +7,7 @@ import {ChangePassword} from '../models/change-password';
 import {UserStats} from '../models/user-stats';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import {PaginatedRequestResultUsers} from '../models/paginated-request-result-publication';
+import {EditAccount} from '../models/edit-account';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,7 @@ import {PaginatedRequestResultUsers} from '../models/paginated-request-result-pu
 export class UserService {
 
   connectedUserId: string;
+  connectedUserRole: string;
   helper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
@@ -24,6 +26,10 @@ export class UserService {
 
   changeUserPassword(changePassword: ChangePassword): Observable<any>{
     return this.http.put( environment.api_url + '/accounts/me/password', changePassword);
+  }
+
+  changeUserInformations(editAccount: EditAccount): Observable<any>{
+    return this.http.put( environment.api_url + '/accounts/me', editAccount);
   }
 
   getConnectedUserStats(): Observable<UserStats>{
@@ -37,17 +43,23 @@ export class UserService {
   searchUsers(username: string, limit: number, offset: number): Observable<PaginatedRequestResultUsers>{
     return this.http.get<PaginatedRequestResultUsers>( environment.api_url + `/users/search?username=${username}&limit=${limit}&offset=${offset}`);
   }
+
   searchNextUsers(request: string): Observable<PaginatedRequestResultUsers>{
     return this.http.get<PaginatedRequestResultUsers>(request);
   }
 
-  setConnectedUserIdFromToken(token: any): void{
+  setConnectedUserInfoFromToken(token: any): void{
     const decodedToken = this.helper.decodeToken(token);
     this.connectedUserId = decodedToken.sub;
+    this.connectedUserRole = decodedToken.role;
   }
 
   isConnectedUserOwner(userId: string): boolean {
     return this.connectedUserId === userId;
+  }
+
+  isConnectedUserAdmin(): boolean {
+    return this.connectedUserRole === 'admin';
   }
 
 }

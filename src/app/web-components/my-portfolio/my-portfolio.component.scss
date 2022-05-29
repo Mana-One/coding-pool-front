@@ -1,0 +1,70 @@
+:host{
+  height: 100%;
+  display: contents;
+}
+
+.container{
+  padding: 2rem;
+}
+
+.no-pub{
+  width: 100%;
+  font-size: 2.5rem;
+  color: white;
+  margin: auto;
+  line-height: normal;
+  text-align: center;
+}
+
+.post-card{
+  padding: 1rem;
+  background: white;
+  margin-bottom: 3rem;
+  .publication-content{
+    width: 100%;
+    margin: auto 1rem;
+    height: fit-content;
+    text-align: justify;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .publication-access{
+    margin: auto .5rem;
+  }
+}
+.icone{
+  width: 60px;
+  height: 60px;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: flex;
+  mat-icon{
+    width: 60px;
+    height: 60px;
+    .custom-size{
+      font-size: 60px;
+    }
+  }
+}
+
+.name{
+  font-size: 1.2rem;
+  font-family: "Salsa";
+  text-align: center;
+  height: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: .5rem;
+}
+
+.card-title{
+  font-size: 2rem;
+  font-family: "Salsa";
+  text-align: center;
+}
+
+.error{
+  color: #f44336;
+}

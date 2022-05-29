@@ -1,0 +1,29 @@
+.example-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 16px;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.example-box {
+  height: 180px;
+  width: 180px;
+}
+
+.scrollOption {
+  overflow-x: scroll;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+::ng-deep .maclass .mat-tab-header{
+  .mat-tab-label-container{
+.mat-tab-list{
+  .mat-tab-label{
+    width: 50%;
+  }
+}
+  }
+}

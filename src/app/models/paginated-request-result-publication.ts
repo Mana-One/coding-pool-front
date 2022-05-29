@@ -1,5 +1,6 @@
-import {Author, PaginatedRequestContentComment, PaginatedRequestContentPublication} from './paginatedRequestContentPublication';
+import {Author, Contest, PaginatedRequestContentComment, PaginatedRequestContentPublication} from './paginatedRequestContentPublication';
 import {Publication} from './publication';
+import {Program} from './program';
 
 export class PaginatedRequestResultPublication {
   public total: number;
@@ -43,3 +44,30 @@ export class PaginatedRequestResultUsers {
   }
 }
 
+export class PaginatedRequestResultPrograms {
+  public total: number;
+  public previous: string;
+  public next: string;
+  public data: Program[];
+
+  constructor(total: number, previous: string, next: string, data: Program[]) {
+    this.total = total;
+    this.previous = previous;
+    this.next = next;
+    this.data = data;
+  }
+}
+
+export class PaginatedRequestResultContest {
+  public total: number;
+  public previous: string;
+  public next: string;
+  public data: Contest[];
+
+  constructor(total: number, previous: string, next: string, data: Contest[]) {
+    this.total = total;
+    this.previous = previous;
+    this.next = next;
+    this.data = data;
+  }
+}

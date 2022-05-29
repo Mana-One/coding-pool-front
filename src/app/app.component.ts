@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
   ngOnInit(): void {
     this.authentificationService.removeIfTokenExpired();
     if (this.authentificationService.isAuthenticated()) {
-      this.userService.setConnectedUserIdFromToken(this.authentificationService.getToken());
+      this.userService.setConnectedUserInfoFromToken(this.authentificationService.getToken());
     }
   }
 }

@@ -15,6 +15,10 @@ export class RegisterService {
     return this.http.post( environment.api_url + '/accounts/register', register);
   }
 
+  registerAdmin(register: Register): Observable<any>{
+    return this.http.post( environment.api_url + '/accounts/register/admin', register);
+  }
+
   checkUserName(userName: string): Observable<any>{
     return this.http.get( environment.api_url + `/accounts/check-username/${userName}`);
   }

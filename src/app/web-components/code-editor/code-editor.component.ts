@@ -3,6 +3,7 @@ import * as ace from 'ace-builds';
 import {ProgramService} from '../../services/program.service';
 import {CodeLanguage} from '../../models/code-language';
 import {ProgramSubmission} from '../../models/program-submission';
+
 @Component({
   selector: 'app-code-editor',
   templateUrl: './code-editor.component.html',
@@ -15,6 +16,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   aceEditor: any;
   aceEditorInput: any;
   aceEditorOutput: any;
+  progressBar: any;
   backgrounds = ['chrome', 'dracula'];
 
   @ViewChild('editor') private editor: ElementRef<HTMLElement>;
@@ -34,19 +36,36 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
       value => {
         this.codeLanguages = value;
       }, error => {
-
       });
   }
 
   submitCode(): void{
-    const programSubmission = new ProgramSubmission(this.aceEditor.session.getValue(), this.selectedLanguage);
+    const programVariables = this.aceEditorInput.session.getValue();
+    const programSubmission = new ProgramSubmission(this.aceEditor.session.getValue(), this.selectedLanguage, programVariables);
+    this.showWaitingBar();
     this.programService.submitCode(programSubmission).subscribe(
       value => {
+        this.hideWaitingBar();
         this.aceEditorOutput.setValue(value.stdout);
       }, error => {
-
+        this.hideWaitingBar();
       });
   }
+
+  showWaitingBar(): void{
+    console.log(this.progressBar);
+    console.log(this.progressBar.classList);
+    this.progressBar.classList.remove('opacity-none');
+      this.progressBar.classList.add('opacity-full');
+
+    console.log(this.progressBar.classList);
+  }
+
+  hideWaitingBar(): void{
+    this.progressBar.classList.add('opacity-none');
+    this.progressBar.classList.remove('opacity-full');
+  }
+
 
   ngAfterViewInit(): void {
     ace.config.set('fontSize', '14px');
@@ -54,7 +73,9 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
     this.aceEditor = ace.edit(this.editor.nativeElement);
     this.aceEditorInput = ace.edit(this.input.nativeElement);
     this.aceEditorOutput = ace.edit(this.output.nativeElement);
-    this.aceEditor.session.setValue('<h1>Ace Editor works great in Angular!</h1>');
+    this.aceEditorOutput.setReadOnly(true);
+    this.aceEditor.session.setValue('Choose a programing langage and let\'s code !');
+    this.progressBar = document.getElementById('progressBar');
   }
 
   resizeEditor(element: HTMLDivElement): void {

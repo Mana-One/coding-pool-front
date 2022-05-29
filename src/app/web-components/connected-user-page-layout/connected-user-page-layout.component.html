@@ -4,7 +4,7 @@
       <div class="logo-container">
         <img class="logo-full" src="assets/images/logo_white.svg">
       </div>
-      <mat-nav-list>
+      <mat-nav-list *ngIf="userMode == 'user'">
         <mat-list-item *ngIf="showReduce" (click)="reduceSideBar()">
           <mat-icon mat-list-icon><i class="material-icons">first_page</i></mat-icon>
           <span class="text-link" mat-line>Reduce</span>
@@ -21,19 +21,43 @@
           <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
           <span class="text-link" mat-line>Users</span>
         </mat-list-item>
+        <mat-list-item [routerLink]="['/contests']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
+          <span class="text-link" mat-line>Contests</span>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/my-portfolio']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
+          <span class="text-link" mat-line>My portfolio</span>
+        </mat-list-item>
         <mat-list-item [routerLink]="['/my-account']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
           <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
           <span class="text-link" mat-line>My Account</span>
-        </mat-list-item>
-        <mat-list-item [routerLink]="['/']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-          <mat-icon mat-list-icon><i class="material-icons">account_balance_wallet</i></mat-icon>
-          <span class="text-link" mat-line>Wallet</span>
         </mat-list-item>
         <mat-list-item [routerLink]="['/logout']">
           <mat-icon mat-list-icon><i class="material-icons">login</i></mat-icon>
           <span class="text-link" mat-line>Logout</span>
         </mat-list-item>
       </mat-nav-list>
+
+      <mat-nav-list *ngIf="userMode == 'admin'">
+        <mat-list-item *ngIf="showReduce" (click)="reduceSideBar()">
+          <mat-icon mat-list-icon><i class="material-icons">first_page</i></mat-icon>
+          <span class="text-link" mat-line>Reduce</span>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/create-admin']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
+          <span class="text-link" mat-line>Admin</span>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/create-contest']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+          <mat-icon mat-list-icon><i class="material-icons">play_for_work</i></mat-icon>
+          <span class="text-link" mat-line>Contest</span>
+        </mat-list-item>
+        <mat-list-item [routerLink]="['/logout']">
+          <mat-icon mat-list-icon><i class="material-icons">login</i></mat-icon>
+          <span class="text-link" mat-line>Logout</span>
+        </mat-list-item>
+      </mat-nav-list>
+
     </mat-sidenav>
 
     <mat-sidenav-content>
@@ -42,7 +66,7 @@
           <div class="logo-container">
             <img class="logo-half" src="assets/images/logo_no_text.svg">
           </div>
-          <mat-nav-list>
+          <mat-nav-list *ngIf="userMode == 'user'">
             <mat-list-item *ngIf="showReduce" (click)="extendSideBar()">
               <mat-icon mat-list-icon><i class="material-icons">last_page</i></mat-icon>
             </mat-list-item>
@@ -55,17 +79,36 @@
             <mat-list-item [routerLink]="['/users']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
               <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
             </mat-list-item>
+            <mat-list-item [routerLink]="['/contests']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+              <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
+            </mat-list-item>
+            <mat-list-item [routerLink]="['/my-portfolio']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+              <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
+            </mat-list-item>
             <mat-list-item [routerLink]="['/my-account']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
               <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
             </mat-list-item>
-            <mat-list-item [routerLink]="['/']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-              <mat-icon mat-list-icon><i class="material-icons">account_balance_wallet</i></mat-icon>
+            <mat-list-item [routerLink]="['/logout']">
+              <mat-icon mat-list-icon><i class="material-icons">login</i></mat-icon>
+            </mat-list-item>
+          </mat-nav-list>
+
+          <mat-nav-list *ngIf="userMode == 'admin'">
+            <mat-list-item *ngIf="showReduce" (click)="extendSideBar()">
+              <mat-icon mat-list-icon><i class="material-icons">last_page</i></mat-icon>
+            </mat-list-item>
+            <mat-list-item [routerLink]="['/create-admin']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+              <mat-icon mat-list-icon><i class="material-icons">supervisor_account</i></mat-icon>
+            </mat-list-item>
+            <mat-list-item [routerLink]="['/create-contest']" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+              <mat-icon mat-list-icon><i class="material-icons">play_for_work</i></mat-icon>
             </mat-list-item>
             <mat-list-item [routerLink]="['/logout']">
               <mat-icon mat-list-icon><i class="material-icons">login</i></mat-icon>
             </mat-list-item>
           </mat-nav-list>
         </mat-sidenav>
+
         <mat-sidenav-content class="margin-tablet" (scroll)="scrollFunction()" id="content">
 
           <button *ngIf="scrollHidden === false" class="btn" id="btn-back-to-top" (click)="backToTop()">

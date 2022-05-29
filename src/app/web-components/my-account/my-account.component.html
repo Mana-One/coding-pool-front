@@ -5,7 +5,12 @@
         <h2 class="card-title">User Informations</h2>
         <div class="card-body m-auto px-0 w-75" style="display: grid">
           <div>
-            <h3 class="info-title">Username</h3>
+            <h3 class="info-title">
+              <div class="d-flex">
+                Username
+                <mat-icon class="ml-auto icone" (click)="openEditAccountDialog()"> edit </mat-icon>
+              </div>
+            </h3>
             <h3>{{userInfos.username}}</h3>
           </div>
           <div>
@@ -78,3 +83,49 @@
     </div>
   </div>
 </div>
+
+
+
+<ng-template #ModifyAccountForm>
+  <h1 mat-dialog-title class="card-title">Modify your account !</h1>
+  <div class="d-flex row" mat-dialog-content>
+    <div class="col-12" [formGroup]="editAccountForm">
+
+      <mat-form-field class="w-100 d-block" appearance="outline">
+        <mat-label>User Name</mat-label>
+        <input matInput [formControlName]="'newUserName'" type="text" placeholder="user name"/>
+        <mat-error>{{getFieldErrorMessageEditAccount('newUserName')}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 d-block" appearance="outline">
+        <mat-label>E-mail</mat-label>
+        <input matInput [formControlName]="'newEmail'" type="text" placeholder="email"/>
+        <mat-error>{{getFieldErrorMessageEditAccount('newEmail')}}</mat-error>
+      </mat-form-field>
+
+    </div>
+    <div class="col-12 d-flex mt-2">
+      <button class="btn btn-block btn-dark py-2 mr-2 my-0" (click)="closePopUp()">Cancel</button>
+      <button class="btn btn-block btn-success py-2 ml-2 my-0" [disabled]="editAccountForm.invalid" (click)="editAccount()">Change</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #awaitingModifyAccount>
+  <h1 mat-dialog-title class="card-title">Editing informations ..</h1>
+  <div class="d-flex" mat-dialog-content>
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #ModifyAccountRequestResult>
+  <h1 mat-dialog-title class="card-title">{{modifyAccountError ? 'Error' : 'Success'}}</h1>
+  <div class="d-flex" mat-dialog-content>
+    <span class="text-center">
+      {{modifyAccountError ? modifyAccountError: 'Acount informartion has successfully been modified !'}}
+    </span>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
+  </div>
+</ng-template>

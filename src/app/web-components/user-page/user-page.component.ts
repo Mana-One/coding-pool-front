@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {Observable} from 'rxjs';
 import {UserStats} from '../../models/user-stats';
+import {ProgramService} from '../../services/program.service';
 
 @Component({
   selector: 'app-user-page',
@@ -11,14 +12,17 @@ import {UserStats} from '../../models/user-stats';
 export class UserPageComponent implements OnInit {
 
   @Input() stateFor = 'me';
+  @Input() userId;
   userStats: UserStats;
   error: string;
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private programService: ProgramService
   ) { }
   panelOpenState = false;
   notMe = false;
   ngOnInit(): void {
+    this.programService.getProgram(this.userId)
     this.getUserState();
     this.notMe = this.stateFor === 'user';
   }
@@ -33,8 +37,7 @@ export class UserPageComponent implements OnInit {
         this.handleUserStateGet(this.userService.getConnectedUserStats());
         break;
       case 'user':
-        console.log(this.stateFor)
-        this.handleUserStateGet(this.userService.getUserStats(this.stateFor));
+        this.handleUserStateGet(this.userService.getUserStats(this.userId));
         break;
       default:
         this.handleUserStateGet(this.userService.getConnectedUserStats());

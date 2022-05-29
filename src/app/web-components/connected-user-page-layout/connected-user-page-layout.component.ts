@@ -1,6 +1,7 @@
 import {AfterContentInit, AfterViewInit, Component, HostListener, OnInit} from '@angular/core';
 import {ScrollService} from '../../services/scroll.service';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-connected-user-page-layout',
@@ -20,13 +21,18 @@ export class ConnectedUserPageLayoutComponent implements OnInit, AfterContentIni
   contents;
   scrollHiddenPages = ['/program'];
   scrollHidden = false;
+  userMode: string;
 
   constructor(
     private scrollService: ScrollService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    this.activatedRoute.data.subscribe(data => {
+      this.userMode = data.role;
+    });
     this.router.events.subscribe((val) => {
       if (val instanceof NavigationEnd) {
         this.isScrollHidden();

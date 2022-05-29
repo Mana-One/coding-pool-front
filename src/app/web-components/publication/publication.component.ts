@@ -33,13 +33,20 @@ export class PublicationComponent implements OnInit {
   commentError: string;
   addCommentError: string;
   addCommentSuccess = false;
+  removeCommentSuccess = false;
+  removeCommentError: string;
   offset = 0;
   limit = 10;
   commentForm: FormGroup;
+  selectedDeleteComment: string;
 
   @ViewChild('awaitingCommentRequestSend', { static: true }) awaitingCommentRequestSend: TemplateRef<any>;
   @ViewChild('creationCommentRequestResult', { static: true }) creationCommentRequestResult: TemplateRef<any>;
 
+
+  @ViewChild('askRemoveComment', { static: true }) askRemoveComment: TemplateRef<any>;
+  @ViewChild('awaitingDeleteComment', { static: true }) awaitingDeleteComment: TemplateRef<any>;
+  @ViewChild('deletionCommentRequestResult', { static: true }) deletionCommentRequestResult: TemplateRef<any>;
 
   constructor(
     private socialNetworkService: SocialNetworkService,
@@ -174,10 +181,38 @@ export class PublicationComponent implements OnInit {
     this.dialog.closeAll();
     if (this.addCommentSuccess){
       this.getFirstComments();
+      this.publication.comments++;
       this.addCommentSuccess = false;
+    }
+    if (this.removeCommentSuccess){
+      const index = this.comments.findIndex(x => x.id === this.selectedDeleteComment);
+      this.comments.splice(index, 1);
+      this.publication.comments--;
+      this.removeCommentSuccess = false;
     }
     setTimeout(() => {
       this.addCommentError = '';
+      this.selectedDeleteComment = '';
     }, 500);
+  }
+
+  askCommentDeletion(id: string): void {
+    this.selectedDeleteComment = id;
+    this.openDialog(this.askRemoveComment);
+  }
+
+  removeComment(): void {
+    this.openDialog(this.awaitingDeleteComment);
+    this.socialNetworkService.removeComment(this.selectedDeleteComment).subscribe(
+      value => {
+        this.removeCommentSuccess = true;
+        this.openDialog(this.deletionCommentRequestResult);
+      },
+      error => {
+        console.log(error);
+        this.removeCommentError = error.message;
+        this.openDialog(this.deletionCommentRequestResult);
+      }
+    );
   }
 }

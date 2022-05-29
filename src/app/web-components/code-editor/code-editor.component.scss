@@ -56,4 +56,19 @@
   height: 100%;
 }
 
+.opacity-none{
+  opacity: 0;
+  transition: all 0.3s;
+}
 
+.opacity-full{
+  opacity: 1;
+  transition: all 0.3s;
+}
+
+.rotate{
+  animation: rotate 1.5s linear infinite;
+}
+@keyframes rotate{
+  to{ transform: rotate(360deg); }
+}

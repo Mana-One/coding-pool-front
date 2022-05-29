@@ -37,8 +37,15 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { LogoutComponent } from './web-components/logout/logout.component';
 import { SearchUserComponent } from './web-components/search-user/search-user.component';
 import { PortfolioComponent } from './web-components/portfolio/portfolio.component';
-import {MatOptionModule} from '@angular/material/core';
+import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MyPortfolioComponent } from './web-components/my-portfolio/my-portfolio.component';
+import {MatTabsModule} from '@angular/material/tabs';
+import { ContestsComponent } from './web-components/contests/contests.component';
+import { CreateAdminComponent } from './web-components/create-admin/create-admin.component';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatRadioModule} from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -60,6 +67,9 @@ import {MatSelectModule} from '@angular/material/select';
     LogoutComponent,
     SearchUserComponent,
     PortfolioComponent,
+    MyPortfolioComponent,
+    ContestsComponent,
+    CreateAdminComponent,
   ],
   imports: [
     BrowserModule,
@@ -82,6 +92,11 @@ import {MatSelectModule} from '@angular/material/select';
     MatExpansionModule,
     MatOptionModule,
     MatSelectModule,
+    MatProgressBarModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatRadioModule,
   ],
   providers: [
     {

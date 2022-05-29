@@ -63,6 +63,11 @@ export class SocialNetworkService {
   }
 
   unFollowUser(id: string): Observable<Publication>{
-    return this.http.delete<Publication>(environment.api_url + 'users/unfollow/' + id);
+    return this.http.delete<Publication>(environment.api_url + '/users/unfollow/' + id);
   }
+
+  removeComment(id: string): Observable<any>{
+    return this.http.delete<any>(environment.api_url + '/comments/' + id);
+  }
+
 }

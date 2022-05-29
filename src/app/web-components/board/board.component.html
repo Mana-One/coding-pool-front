@@ -1,6 +1,6 @@
 <div class="container h-100">
 
-  <app-user-page [stateFor]="type"></app-user-page>
+  <app-user-page [stateFor]="type" [userId]="userId"></app-user-page>
 
   <div *ngIf="this.type != 'user'" class="d-flex bg-light px-2 py-3 mb-5 rounded">
     <div class="icone">

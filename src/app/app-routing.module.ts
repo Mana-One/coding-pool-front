@@ -15,6 +15,10 @@ import {BoardComponent} from './web-components/board/board.component';
 import {PublicationComponent} from './web-components/publication/publication.component';
 import {LogoutComponent} from './web-components/logout/logout.component';
 import {SearchUserComponent} from './web-components/search-user/search-user.component';
+import {MyPortfolioComponent} from './web-components/my-portfolio/my-portfolio.component';
+import {AuthGuardConnectedAdminService} from './special-implementation/auth-guard-connected-admin.service';
+import {ContestsComponent} from './web-components/contests/contests.component';
+import {CreateAdminComponent} from './web-components/create-admin/create-admin.component';
 
 const routes: Routes = [
   { path: '', component: DisconnectedPageLayoutComponent,
@@ -27,7 +31,15 @@ const routes: Routes = [
     ]
   },
   { path: '', component: ConnectedUserPageLayoutComponent,
-    canActivate: [AuthGuardConnectedService],
+    canActivate: [AuthGuardConnectedAdminService], data : { role: 'admin'},
+    children: [
+      { path: 'create-admin', component: CreateAdminComponent },
+      { path: 'create-contest', component: ContestsComponent, data : { type: 'admin'} },
+    ]
+  },
+
+  { path: '', component: ConnectedUserPageLayoutComponent,
+    canActivate: [AuthGuardConnectedService], data : { role: 'user'},
     children: [
       { path: 'my-account', component: MyAccountComponent },
       { path: 'board', component: BoardComponent, data : { type: 'home'} },
@@ -35,10 +47,14 @@ const routes: Routes = [
       { path: 'user/:id', component: BoardComponent, data : { type: 'user'} },
       { path: 'publication/:id', component: PublicationComponent },
       { path: 'users', component: SearchUserComponent },
+      { path: 'my-portfolio', component: MyPortfolioComponent, data : { type: 'me'} },
       { path: 'program/:id', component: CodeEditorComponent },
-      { path: 'logout', component: LogoutComponent },
+      { path: 'user-portfolio/:id', component: MyPortfolioComponent, data : { type: 'outsider'} },
+      { path: 'contests', component: ContestsComponent, data : { type: 'user'} },
     ]
   },
+
+  { path: 'logout', component: LogoutComponent },
 
   { path: '404', component: NotFoundPageComponent },
 

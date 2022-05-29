@@ -6,10 +6,10 @@ import {UserService} from '../services/user.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardConnectedService implements CanActivate{
+export class AuthGuardConnectedAdminService implements CanActivate{
 
   constructor(public auth: AuthentificationService, public router: Router, public userService: UserService) {}  canActivate(): boolean {
-    if (this.auth.isAuthenticated() && this.userService.isConnectedUserAdmin() === false) {
+    if (this.auth.isAuthenticated() && this.userService.isConnectedUserAdmin() === true) {
       return true;
     } else{
       this.router.navigate(['login']);

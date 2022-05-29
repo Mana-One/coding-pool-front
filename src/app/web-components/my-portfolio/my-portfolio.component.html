@@ -1,0 +1,98 @@
+<div class="container h-100">
+  <button *ngIf="isMe" class="btn btn-block btn-success mb-4 w-auto" (click)="openProgramCreationForm()">
+    <div class="d-flex">
+    <mat-icon> create_new_folder </mat-icon>
+    <p class="p-0 my-0 ml-2">Create a program</p>
+    </div>
+  </button>
+
+
+  <div class="row p-0 m-0" *ngIf="lastRequestResult">
+    <div class="post-card rounded col-12 col-md-6" *ngFor='let program of programs'>
+      <div class="row">
+        <div class="col-12 w-100">
+          <div class="d-flex ml-auto" style="width: fit-content;">
+            <mat-icon><i class="material-icons">access_time</i></mat-icon>
+            <span>{{getDate(program.createdAt)}}</span>
+          </div>
+        </div>
+        <div class="icone col-12">
+          <mat-icon><i class="material-icons custom-size">folder</i></mat-icon>
+          <span class="truncate name">{{program.title}}</span>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-block btn-dark" (click)="editProgram(program.id)">Edit program</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="w-100 d-flex" *ngIf="searchingPrograms">
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+
+  <div *ngIf="noPrograms" class="d-flex">
+    <span *ngIf="isMe" class="no-pub">There is no program, you should create some ...</span>
+    <span *ngIf="!isMe" class="no-pub">There is no program for this user ...</span>
+  </div>
+
+  <div *ngIf="noMore" class="d-flex">
+    <span class="no-pub">There is no more programs ...</span>
+  </div>
+
+  <div *ngIf="programsError">
+    <span class="no-pub d-block m-auto">Something went wrong ...</span>
+    <button class="btn btn-block btn-dark w-auto m-auto px-4 mt-2" (click)="retryGetPrograms()">Retry</button>
+  </div>
+
+</div>
+
+<ng-template #creationProgramForm>
+  <h1 mat-dialog-title class="card-title">Create a program !</h1>
+  <div class="d-flex row" mat-dialog-content>
+    <div class="col-12" [formGroup]="programCreationForm">
+
+      <mat-form-field class="w-100 d-block" appearance="outline">
+        <input matInput [formControlName]="'programName'" type="text" placeholder="Program title ..."/>
+        <mat-error *ngIf="programCreationForm.controls.programName.hasError('required')">This field is required</mat-error>
+        <mat-error *ngIf="programCreationForm.controls.programName.hasError('minlength')">Minimal length is 3 characters</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100 d-block" appearance="fill">
+        <mat-label>Code Langage</mat-label>
+        <mat-select name="programs" [formControlName]="'programLanguageId'">
+          <mat-option *ngFor="let code of codeLanguages" [value]="code.id">
+            {{code.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="programCreationForm.controls.programLanguageId.hasError('required')">This field is required</mat-error>
+      </mat-form-field>
+
+      <p class="error" *ngIf="codeLanguages.length == 0">Error: Cannot create a program because languages are not available</p>
+    </div>
+    <div class="col-12 d-flex mt-2">
+      <button class="btn btn-block btn-dark py-2 mr-2 my-0" (click)="closePopUp()">Cancel</button>
+      <button class="btn btn-block btn-success py-2 ml-2 my-0" [disabled]="programCreationForm.invalid || codeLanguages.length < 1" (click)="createProgram()">Create</button>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #awaitingCreationProgram>
+  <h1 mat-dialog-title class="card-title">Creating the program ..</h1>
+  <div class="d-flex" mat-dialog-content>
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #creationProgramRequestResult>
+  <h1 mat-dialog-title class="card-title">{{createProgramError ? 'Error' : 'Success'}}</h1>
+  <div class="d-flex" mat-dialog-content>
+    <span class="text-center">
+      {{createProgramError ? createProgramError: 'The program has successfully been created !'}}
+    </span>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
+  </div>
+</ng-template>

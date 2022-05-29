@@ -79,7 +79,9 @@
               <div class="d-flex">
                 <mat-icon><i class="material-icons">access_time</i></mat-icon>
                 <span>{{getDate(comment.createdAt)}}</span>
+                <mat-icon class="btn-danger rounded ml-auto" style="cursor: pointer" (click)="askCommentDeletion(comment.id)">delete</mat-icon>
               </div>
+
             </div>
           </div>
           <div class="publication-content mb-2">
@@ -121,6 +123,34 @@
   <div class="d-flex" mat-dialog-content>
     <span class="text-center">
       {{addCommentError ? addCommentError: 'The comment has successfully been created !'}}
+    </span>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
+  </div>
+</ng-template>
+
+
+<ng-template #askRemoveComment>
+  <h1 mat-dialog-title class="card-title">Are you sure to remove this comment ?</h1>
+  <div class="d-flex" mat-dialog-content>
+    <button class="btn btn-danger btn-block my-0 mr-2" (click)="removeComment()">Yes</button>
+    <button class="btn btn-dark btn-block my-0 ml-2" (click)="closePopUp()">No</button>
+  </div>
+</ng-template>
+
+<ng-template #awaitingDeleteComment>
+  <h1 mat-dialog-title class="card-title">Removing the comment ..</h1>
+  <div class="d-flex" mat-dialog-content>
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #deletionCommentRequestResult>
+  <h1 mat-dialog-title class="card-title">{{removeCommentError ? 'Error' : 'Success'}}</h1>
+  <div class="d-flex" mat-dialog-content>
+    <span class="text-center">
+      {{removeCommentError ? removeCommentError: 'The comment has successfully been created !'}}
     </span>
   </div>
   <div mat-dialog-actions>

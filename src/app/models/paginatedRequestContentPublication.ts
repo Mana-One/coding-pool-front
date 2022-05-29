@@ -38,3 +38,17 @@ export class Author {
   }
 
 }
+
+export class Contest {
+  public id: string;
+  public title: string;
+  public startDate: string;
+  public endDate: string;
+
+  constructor(id: string, title: string, startDate: string, endDate: string) {
+    this.id = id;
+    this.title = title;
+    this.startDate = startDate;
+    this.endDate = endDate;
+  }
+}
