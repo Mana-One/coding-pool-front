@@ -70,6 +70,7 @@ export class LoginPageComponent implements OnInit {
             const cardError = document.getElementById('card-error');
             cardError.style.opacity = '1';
           }
+          this.isRequestingLogin = false
         }, () => this.isRequestingLogin = false
       );
     }

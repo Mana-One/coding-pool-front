@@ -1,9 +1,12 @@
 <div class="container">
 
   <div class="my-card rounded mb-4">
+    <div *ngIf="program" class="pb-3 title">
+      <span class="">{{program.title}}</span>
+    </div>
     <mat-form-field appearance="fill">
       <mat-label>Code Langage</mat-label>
-      <mat-select name="food" [(value)]="selectedLanguage">
+      <mat-select name="food" [ngModel]="selectedLanguage"  [disabled]="langId"  [compareWith]="compareFn">
         <mat-option *ngFor="let code of codeLanguages" [value]="code.id">
           {{code.name}}
         </mat-option>
@@ -60,8 +63,8 @@
 
 
   <div class="my-card rounded d-flex">
-    <button class="btn btn-success btn-block my-0 mr-2">Save</button>
-    <button (click)="submitCode()" class="btn btn-dark btn-block my-0 ml-2">Execute</button>
+    <button *ngIf="!contestId" class="btn btn-success btn-block my-0 mr-2">Save</button>
+    <button (click)="submitChoiceCode()" class="btn btn-dark btn-block my-0 ml-2">Execute</button>
 
   </div>
 

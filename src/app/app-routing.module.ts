@@ -19,6 +19,7 @@ import {MyPortfolioComponent} from './web-components/my-portfolio/my-portfolio.c
 import {AuthGuardConnectedAdminService} from './special-implementation/auth-guard-connected-admin.service';
 import {ContestsComponent} from './web-components/contests/contests.component';
 import {CreateAdminComponent} from './web-components/create-admin/create-admin.component';
+import {ContestComponent} from './web-components/contest/contest.component';
 
 const routes: Routes = [
   { path: '', component: DisconnectedPageLayoutComponent,
@@ -51,6 +52,7 @@ const routes: Routes = [
       { path: 'program/:id', component: CodeEditorComponent },
       { path: 'user-portfolio/:id', component: MyPortfolioComponent, data : { type: 'outsider'} },
       { path: 'contests', component: ContestsComponent, data : { type: 'user'} },
+      { path: 'contest/:id', component: ContestComponent },
     ]
   },
 

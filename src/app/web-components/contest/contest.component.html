@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="contest-card rounded" *ngIf="contestRule">
+    <div class="big-title mb-4 text-center">Contest</div>
+
+    <div class="row">
+      <div class="mb-2 col-12 col-md-6 ">
+        <span class="sub-title">title: </span>{{contestRule.title}}
+      </div>
+
+      <div class="mb-2 col-12 col-md-6 ">
+        <span class="sub-title">Id: </span>{{contestRule.id}}
+      </div>
+    </div>
+
+    <div class="mb-2">
+      <span class="sub-title">Description: </span>
+      <p>{{contestRule.description}}</p>
+    </div>
+
+    <div class="row">
+      <div class="mb-2 col-12 col-md-6">
+        <span class="sub-title">Dates: </span>
+        from {{getDate(contestRule.startDate)}} to {{getDate(contestRule.endDate)}}
+      </div>
+      <div class="col-12 col-md-6">
+        <span class="sub-title ">Imposed language: </span>
+        {{getLangageName(contestRule.languageId)}}
+      </div>
+    </div>
+
+  </div>
+  <mat-spinner class="m-auto" *ngIf="searchingContestRule"></mat-spinner>
+
+  <div class="mt-4">
+    <mat-accordion *ngIf="contestLeaderBoard">
+      <mat-expansion-panel [expanded]="panelOpenState">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3 class="info-title p-0 m-0">Classement</h3>
+          </mat-panel-title>
+          <mat-panel-description>
+            <div class="my-auto">
+              Click to see the classement
+            </div>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="m-auto px-0 row" *ngFor="let classement of contestLeaderBoard">
+          <div class="col-12 d-flex  px-0 mx-0">
+            <div class="col-4 d-md-flex">
+              <span class="sub-title">User: </span><p> {{classement.participant.username}}</p>
+            </div>
+            <div class="col-4 d-md-flex">
+              <span class="sub-title">Time: </span><p> {{classement.time}}s</p>
+            </div>
+            <div class="col-4 d-md-flex">
+              <span class="sub-title">Passed: </span>
+              <p>{{classement.passed}}</p>
+            </div>
+          </div>
+        </div>
+
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+
+</div>
+
+
+
+
+<app-code-editor *ngIf="contestRule" [contestId]="contestId" [langId]="contestRule.languageId"></app-code-editor>

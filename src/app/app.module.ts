@@ -13,7 +13,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatSliderModule} from '@angular/material/slider';
 import {MatInputModule} from '@angular/material/input';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {GoogleLoginProvider, SocialAuthServiceConfig, SocialLoginModule} from 'angularx-social-login';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {RegisterPageComponent} from './web-components/register-page/register-page.component';
@@ -46,6 +46,8 @@ import { ContestsComponent } from './web-components/contests/contests.component'
 import { CreateAdminComponent } from './web-components/create-admin/create-admin.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
+import { ContestComponent } from './web-components/contest/contest.component';
+import { ContestClassementComponent } from './web-components/contest-classement/contest-classement.component';
 
 @NgModule({
   declarations: [
@@ -70,34 +72,37 @@ import {MatRadioModule} from '@angular/material/radio';
     MyPortfolioComponent,
     ContestsComponent,
     CreateAdminComponent,
+    ContestComponent,
+    ContestClassementComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    NgbModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatIconModule,
-    MatSliderModule,
-    MatInputModule,
-    ReactiveFormsModule,
-    SocialLoginModule,
-    MatProgressSpinnerModule,
-    MatSidenavModule,
-    MatListModule,
-    AngularResizedEventModule,
-    MatDialogModule,
-    InfiniteScrollModule,
-    MatExpansionModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatProgressBarModule,
-    MatTabsModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatRadioModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        NgbModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatSliderModule,
+        MatInputModule,
+        ReactiveFormsModule,
+        SocialLoginModule,
+        MatProgressSpinnerModule,
+        MatSidenavModule,
+        MatListModule,
+        AngularResizedEventModule,
+        MatDialogModule,
+        InfiniteScrollModule,
+        MatExpansionModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatProgressBarModule,
+        MatTabsModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatRadioModule,
+        FormsModule,
+    ],
   providers: [
     {
       provide: 'SocialAuthServiceConfig',

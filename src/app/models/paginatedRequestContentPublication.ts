@@ -52,3 +52,28 @@ export class Contest {
     this.endDate = endDate;
   }
 }
+
+export class Participant{
+  public id: string;
+  public username: string;
+
+  constructor(id: string, username: string) {
+    this.id = id;
+    this.username = username;
+  }
+}
+
+export class Classement {
+  public participant: Participant;
+  public competitionId: string;
+  public time: string;
+  public passed: boolean;
+
+  constructor(participant: Participant, competitionId: string, time: string, passed: boolean) {
+    this.participant = participant;
+    this.competitionId = competitionId;
+    this.time = time;
+    this.passed = passed;
+  }
+}
+

@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {RegisterService} from '../../services/register.service';
 import {Register} from '../../models/register';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-register-page',
@@ -20,7 +21,8 @@ export class RegisterPageComponent implements OnInit {
   errorMessage = '';
   isRequestingRegister = false;
   constructor(
-    private registerService: RegisterService
+    private registerService: RegisterService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -70,12 +72,17 @@ export class RegisterPageComponent implements OnInit {
           this.errorMessage = 'Registration successfully have been done, you will be redirected in a few seconds ...';
           cardMessage.classList.remove('card-error');
           cardMessage.classList.add('card-success');
+
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 500);
         },
         error => {
           this.errorMessage = error.message;
           this.registerAttemptFailed = true;
           cardMessage.classList.remove('card-success');
           cardMessage.classList.add('card-error');
+          this.isRequestingRegister = false;
         }, () => {
           this.isRequestingRegister = false;
           cardMessage.style.opacity = '1';

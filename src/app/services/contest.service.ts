@@ -4,7 +4,8 @@ import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {ContestCreation} from '../models/contest-creation';
 import {CodeContest} from '../models/code-contest';
-import {PaginatedRequestResultContest} from '../models/paginated-request-result-publication';
+import {PaginatedRequestClassementContest, PaginatedRequestResultContest} from '../models/paginated-request-result-publication';
+import {ContestRule} from '../models/contest-rule';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +24,8 @@ export class ContestService {
     return this.http.get<PaginatedRequestResultContest>( environment.api_url + `/competitions?limit=${limit}&offset=${offset}&status=${status}`);
   }
 
-  getContestRule(contestId: string): Observable<PaginatedRequestResultContest>{
-    return this.http.get<PaginatedRequestResultContest>( environment.api_url + `/competitions/${contestId}/public`);
+  getContestRule(contestId: string): Observable<ContestRule>{
+    return this.http.get<ContestRule>( environment.api_url + `/competitions/${contestId}/public`);
   }
 
   submitAnwserContest(contestId: string, code: CodeContest): Observable<any>{
@@ -33,5 +34,9 @@ export class ContestService {
 
   getNextContest(next: string): Observable<PaginatedRequestResultContest>{
     return this.http.get<PaginatedRequestResultContest>(next);
+  }
+
+  getContestLeaderBoard(contestId: string, limit: number, offset: number): Observable<PaginatedRequestClassementContest>{
+    return this.http.get<PaginatedRequestClassementContest>( environment.api_url + `/submissions/leaderboards/${contestId}?limit=${limit}&offset=${offset}`);
   }
 }

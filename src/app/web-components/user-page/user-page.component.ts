@@ -17,12 +17,10 @@ export class UserPageComponent implements OnInit {
   error: string;
   constructor(
     private userService: UserService,
-    private programService: ProgramService
   ) { }
   panelOpenState = false;
   notMe = false;
   ngOnInit(): void {
-    this.programService.getProgram(this.userId)
     this.getUserState();
     this.notMe = this.stateFor === 'user';
   }

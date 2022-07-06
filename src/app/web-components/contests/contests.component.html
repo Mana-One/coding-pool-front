@@ -8,21 +8,24 @@
 
   <div class="post-card rounded">
     <mat-radio-group aria-label="Select an option" color="primary" class="row w-100" (change)="getContestWithStatus($event)">
-      <div class="col-12 col-md-4 ">
+      <div class="col-12 col-md-3">
         <mat-radio-button class="salsa" [checked]="true" value="scheduled">Scheduled</mat-radio-button>
       </div>
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-md-3">
         <mat-radio-button class="salsa" value="current">Current</mat-radio-button>
       </div>
-      <div class="col-12 col-md-4">
+      <div class="col-12 col-md-3">
         <mat-radio-button class="salsa" value="ended">Ended</mat-radio-button>
+      </div>
+      <div class="col-12 col-md-3">
+        <mat-radio-button class="salsa" value="published">Published</mat-radio-button>
       </div>
     </mat-radio-group>
 
   </div>
 
   <div class="row p-0 m-0" *ngIf="lastRequestResult">
-    <div class="post-card rounded col-12 col-md-6" *ngFor='let contest of contest'>
+    <div class="post-card rounded col-12 col-md-6 sized" *ngFor='let contest of contest'>
       <div class="row">
         <div class="col-12 w-100">
           <div class="d-flex ml-auto" style="width: fit-content;">
@@ -35,6 +38,7 @@
           <span class="truncate name">{{contest.title}}</span>
         </div>
       </div>
+      <button class="btn btn-block btn-dark" [routerLink]="'/contest/'+contest.id">Access contest</button>
     </div>
   </div>
 

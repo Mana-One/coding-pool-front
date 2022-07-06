@@ -1,8 +1,13 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import * as ace from 'ace-builds';
 import {ProgramService} from '../../services/program.service';
 import {CodeLanguage} from '../../models/code-language';
 import {ProgramSubmission} from '../../models/program-submission';
+import {ActivatedRoute} from '@angular/router';
+import {ContestService} from '../../services/contest.service';
+import {CodeContest} from '../../models/code-contest';
+import {ProgramData} from '../../models/program';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-code-editor',
@@ -18,24 +23,73 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   aceEditorOutput: any;
   progressBar: any;
   backgrounds = ['chrome', 'dracula'];
+  programmeId: string;
+  program: ProgramData;
+  langageName: string;
+  @Input() langId: number;
+  @Input() contestId: string;
 
   @ViewChild('editor') private editor: ElementRef<HTMLElement>;
   @ViewChild('input') private input: ElementRef<HTMLElement>;
   @ViewChild('output') private output: ElementRef<HTMLElement>;
 
   constructor(
-    private programService: ProgramService
+    private programService: ProgramService,
+    private activatedRoute: ActivatedRoute,
+    private contestService: ContestService
   ) { }
 
   ngOnInit(): void {
     this.getListCodeLanguageAvailable();
+    this.activatedRoute.params.subscribe(data => {
+      this.programmeId = data.id;
+    });
+    if (this.programmeId && !this.contestId){
+      this.getProgram();
+    }
   }
+
+  getProgram(): void{
+    this.programService.getProgram(this.programmeId).subscribe(
+      value => {
+        this.program = value;
+        this.aceEditor.session.setValue(value.content);
+        this.selectedLanguage = value.languageId;
+      }
+    );
+  }
+
+  compareFn = (obj1: any, obj2: any) => {
+    return obj1.id === obj2.id;
+  };
 
   getListCodeLanguageAvailable(): void{
     this.programService.getListCodeLanguageAvailable().subscribe(
       value => {
         this.codeLanguages = value;
+        if (this.langId){
+          this.selectedLanguage = this.langId;
+        }
       }, error => {
+      });
+  }
+
+  submitChoiceCode(): void {
+    if (this.contestId){
+      this.submitContest();
+    }else{
+      this.submitCode();
+    }
+  }
+
+  submitContest(): void{
+    const programSubmission = new CodeContest(this.aceEditor.session.getValue());
+    this.showWaitingBar();
+    this.contestService.submitAnwserContest(this.contestId, programSubmission).subscribe(
+      value => {
+        this.hideWaitingBar();
+      }, error => {
+        this.hideWaitingBar();
       });
   }
 
@@ -56,8 +110,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
     console.log(this.progressBar);
     console.log(this.progressBar.classList);
     this.progressBar.classList.remove('opacity-none');
-      this.progressBar.classList.add('opacity-full');
-
+    this.progressBar.classList.add('opacity-full');
     console.log(this.progressBar.classList);
   }
 
@@ -74,7 +127,12 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
     this.aceEditorInput = ace.edit(this.input.nativeElement);
     this.aceEditorOutput = ace.edit(this.output.nativeElement);
     this.aceEditorOutput.setReadOnly(true);
-    this.aceEditor.session.setValue('Choose a programing langage and let\'s code !');
+    if (this.contestId){
+      this.aceEditor.session.setValue('Welcome in this contest !');
+      this.aceEditorInput.setReadOnly(true);
+    } else{
+      this.aceEditor.session.setValue('Choose a programing langage and let\'s code !');
+    }
     this.progressBar = document.getElementById('progressBar');
   }
 

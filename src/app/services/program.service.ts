@@ -7,6 +7,7 @@ import {ProgramSubmission} from '../models/program-submission';
 import {SubmissionResult} from '../models/submission-result';
 import {PaginatedRequestResultPrograms} from '../models/paginated-request-result-publication';
 import {ProgramCreation} from '../models/program-creation';
+import {ProgramData} from '../models/program';
 
 @Injectable({
   providedIn: 'root'
@@ -33,8 +34,8 @@ export class ProgramService {
     return this.http.get<PaginatedRequestResultPrograms>( environment.api_url + `/programs/portfolio/?authorId=${userId}&limit=${limit}&offset=${offset}`);
   }
 
-    getProgram(programId: string): Observable<any>{
-    return this.http.get( environment.api_url + '/programs/' + programId);
+  getProgram(programId: string): Observable<ProgramData>{
+    return this.http.get<ProgramData>( environment.api_url + '/programs/' + programId);
   }
 
   getListCodeLanguageAvailable(): Observable<CodeLanguage[]>{
