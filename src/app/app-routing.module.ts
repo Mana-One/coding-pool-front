@@ -36,6 +36,7 @@ const routes: Routes = [
     children: [
       { path: 'create-admin', component: CreateAdminComponent },
       { path: 'create-contest', component: ContestsComponent, data : { type: 'admin'} },
+      { path: 'contest/:id', component: ContestComponent, data : { type: 'admin'} },
     ]
   },
 

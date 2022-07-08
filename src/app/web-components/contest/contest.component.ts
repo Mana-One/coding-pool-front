@@ -25,14 +25,19 @@ export class ContestComponent implements OnInit {
   panelOpenState = false;
   codeLanguages: CodeLanguage[] = [];
   contestEnded = false;
+  isAdmin = false;
 
   constructor(
     private contestService: ContestService,
     private activatedRoute: ActivatedRoute,
-    private programService: ProgramService
+    private programService: ProgramService,
+    private activatedRoute2: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    this.activatedRoute2.data.subscribe(data => {
+      this.isAdmin = data.type === 'admin';
+    });
     this.activatedRoute.params.subscribe(data => {
       this.contestId = data.id;
     });
