@@ -25,6 +25,7 @@ const routes: Routes = [
   { path: '', component: DisconnectedPageLayoutComponent,
     canActivate: [AuthGuardDisconnectedService],
     children: [
+      {path: '', redirectTo: 'home', pathMatch: 'full'},
       { path: 'home', component: HomePageComponent },
       { path: 'about-us', component: AboutUsComponent },
       { path: 'login', component: LoginPageComponent },
@@ -34,6 +35,7 @@ const routes: Routes = [
   { path: '', component: ConnectedUserPageLayoutComponent,
     canActivate: [AuthGuardConnectedAdminService], data : { role: 'admin'},
     children: [
+      {path: '', redirectTo: 'create-admin', pathMatch: 'full'},
       { path: 'create-admin', component: CreateAdminComponent },
       { path: 'create-contest', component: ContestsComponent, data : { type: 'admin'} },
       { path: 'ad-contest/:id', component: ContestComponent, data : { type: 'admin'} },
@@ -43,6 +45,7 @@ const routes: Routes = [
   { path: '', component: ConnectedUserPageLayoutComponent,
     canActivate: [AuthGuardConnectedService], data : { role: 'user'},
     children: [
+      {path: '', redirectTo: 'my-account', pathMatch: 'full'},
       { path: 'my-account', component: MyAccountComponent },
       { path: 'board', component: BoardComponent, data : { type: 'home'} },
       { path: 'my-messages', component: BoardComponent, data : { type: 'me'} },

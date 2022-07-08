@@ -1,29 +1,45 @@
-.example-box{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 16px;
-  padding: 16px;
-  border-radius: 8px;
+#background-video {
+  height: 100vh;
+  width: 100vw;
+  object-fit: cover;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
 }
 
-.example-box {
-  height: 180px;
-  width: 180px;
+.content{
+  width: 100%;
 }
 
-.scrollOption {
-  overflow-x: scroll;
-  overflow: auto;
-  white-space: nowrap;
+h1, h2,p {
+  color: white;
+  font-family: Salsa;
+  font-weight: bold;
+  line-height: 1;
 }
 
-::ng-deep .maclass .mat-tab-header{
-  .mat-tab-label-container{
-.mat-tab-list{
-  .mat-tab-label{
-    width: 50%;
+
+
+h1 {
+  font-size: 6rem;
+  margin-top: 20vh;
+  text-align: center;
+}
+
+h2 { font-size: 2.5rem; }
+
+@media screen and (min-width: 550px) {
+  .width{
+    width:200px;
   }
 }
+
+@media screen and (max-width: 550px) {
+  .width {
+    width:100%;
+    padding: .5rem;
   }
 }
