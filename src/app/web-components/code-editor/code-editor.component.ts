@@ -31,6 +31,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   isSubmitingCode = false;
   isSavingCode = false;
   errorMessage = '';
+  token: string;
 
   @ViewChild('editor') private editor: ElementRef<HTMLElement>;
   @ViewChild('input') private input: ElementRef<HTMLElement>;
@@ -88,14 +89,38 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
 
   submitContest(): void{
     const programSubmission = new CodeContest(this.aceEditor.session.getValue());
-    this.showWaitingBar();
     this.contestService.submitAnwserContest(this.contestId, programSubmission).subscribe(
       value => {
-        this.hideWaitingBar();
+        this.token = value.token;
+        this.getSubmissionResult();
       }, error => {
-        this.hideWaitingBar();
+        this.aceEditorOutput.setValue('An error occured while getting your answer !');
       });
   }
+
+  getSubmissionResult(attempt: number = 0): void {
+    if (attempt <= 5){
+      this.contestService.getAnwserContest(this.token).subscribe(
+        value => {
+          if (value.status.id === 1){
+            setTimeout(() => {
+              this.getSubmissionResult(attempt + 1);
+            }, 8000);
+          } else{
+            if (value.status.id > 3){
+              this.aceEditorOutput.setValue( value.status.description + '\n' + value.compile_output);
+            } else {
+              this.aceEditorOutput.setValue(value.stdout);
+            }
+          }
+        }
+      );
+    } else{
+      this.aceEditorOutput.setValue('The server take too long to respond');
+    }
+
+  }
+
 
   submitCode(): void{
     const code = this.aceEditor.session.getValue();

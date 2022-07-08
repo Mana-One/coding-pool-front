@@ -25,6 +25,7 @@ export class ContestComponent implements OnInit {
   panelOpenState = false;
   codeLanguages: CodeLanguage[] = [];
   contestEnded = false;
+  contestNotStarted = false;
   isAdmin = false;
 
   constructor(
@@ -53,6 +54,7 @@ export class ContestComponent implements OnInit {
       value => {
         this.contestRule = value;
         this.contestEnded = this.isInThePast(new Date(value.endDate));
+        this.contestNotStarted = this.isInTheFuture(new Date(value.startDate));
         this.searchingContestRule = false;
       },
       error => {
@@ -66,6 +68,12 @@ export class ContestComponent implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     return date < today;
+  }
+
+  isInTheFuture(date: Date): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date > today;
   }
 
   getContestLeaderBoard(): void{

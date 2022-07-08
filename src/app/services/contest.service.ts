@@ -6,6 +6,8 @@ import {ContestCreation} from '../models/contest-creation';
 import {CodeContest} from '../models/code-contest';
 import {PaginatedRequestClassementContest, PaginatedRequestResultContest} from '../models/paginated-request-result-publication';
 import {ContestRule} from '../models/contest-rule';
+import {ProgramSubmission} from '../models/program-submission';
+import {SubmissionResult} from '../models/submission-result';
 
 @Injectable({
   providedIn: 'root'
@@ -39,4 +41,9 @@ export class ContestService {
   getContestLeaderBoard(contestId: string, limit: number, offset: number): Observable<PaginatedRequestClassementContest>{
     return this.http.get<PaginatedRequestClassementContest>( environment.api_url + `/submissions/leaderboards/${contestId}?limit=${limit}&offset=${offset}`);
   }
+
+  getAnwserContest(token: string): Observable<SubmissionResult> {
+    return this.http.get<SubmissionResult>( environment.api_code_execution_url + `/submissions/${token}`);
+  }
+
 }

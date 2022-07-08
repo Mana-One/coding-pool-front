@@ -20,3 +20,12 @@
   font-size: 1.1rem;
   font-family: "Salsa";
 }
+
+.no-pub {
+  width: 100%;
+  font-size: 2.5rem;
+  color: white;
+  margin: auto;
+  line-height: normal;
+  text-align: center;
+}
