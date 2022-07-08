@@ -38,7 +38,8 @@
           <span class="truncate name">{{contest.title}}</span>
         </div>
       </div>
-      <button class="btn btn-block btn-dark" [routerLink]="'/contest/'+contest.id">Access contest</button>
+      <button class="btn btn-block btn-dark" *ngIf="isAdmin" [routerLink]="'/ad-contest/'+contest.id">Access contest</button>
+      <button class="btn btn-block btn-dark" *ngIf="!isAdmin" [routerLink]="'/contest/'+contest.id">Access contest</button>
     </div>
   </div>
 

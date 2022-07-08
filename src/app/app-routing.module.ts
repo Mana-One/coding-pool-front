@@ -36,7 +36,7 @@ const routes: Routes = [
     children: [
       { path: 'create-admin', component: CreateAdminComponent },
       { path: 'create-contest', component: ContestsComponent, data : { type: 'admin'} },
-      { path: 'contest/:id', component: ContestComponent, data : { type: 'admin'} },
+      { path: 'ad-contest/:id', component: ContestComponent, data : { type: 'admin'} },
     ]
   },
 
@@ -53,7 +53,7 @@ const routes: Routes = [
       { path: 'program/:id', component: CodeEditorComponent },
       { path: 'user-portfolio/:id', component: MyPortfolioComponent, data : { type: 'outsider'} },
       { path: 'contests', component: ContestsComponent, data : { type: 'user'} },
-      { path: 'contest/:id', component: ContestComponent },
+      { path: 'contest/:id', component: ContestComponent, data : { type: 'user'} },
     ]
   },
 
