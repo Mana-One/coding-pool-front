@@ -6,7 +6,7 @@
     </div>
     <mat-form-field appearance="fill">
       <mat-label>Code Langage</mat-label>
-      <mat-select name="food" [ngModel]="selectedLanguage"  [disabled]="langId"  [compareWith]="compareFn">
+      <mat-select name="food" [ngModel]="selectedLanguage"  [disabled]="true"  [compareWith]="compareFn">
         <mat-option *ngFor="let code of codeLanguages" [value]="code.id">
           {{code.name}}
         </mat-option>
@@ -15,7 +15,7 @@
 
     <mat-form-field class="ml-2" appearance="fill">
       <mat-label>Theme</mat-label>
-      <mat-select name="food" (valueChange)="changeEditorBackgroundMode($event)" [(value)]="selectedLanguage">
+      <mat-select name="food" (valueChange)="changeEditorBackgroundMode($event)" >
         <mat-option *ngFor="let background of backgrounds" [value]="background">
           {{background}}
         </mat-option>
@@ -63,9 +63,21 @@
 
 
   <div class="my-card rounded d-flex">
-    <button *ngIf="!contestId" class="btn btn-success btn-block my-0 mr-2">Save</button>
-    <button (click)="submitChoiceCode()" class="btn btn-dark btn-block my-0 ml-2">Execute</button>
+
+    <button *ngIf="!contestId" (click)="saveCode()" [disabled]="isSubmitingCode || isSavingCode" class="btn btn-success btn-block my-0 mr-2">
+      <span *ngIf="!isSavingCode">Save</span>
+      <mat-spinner *ngIf="isSavingCode" class="m-auto" [diameter]="30" color="primary"></mat-spinner>
+    </button>
+
+    <button (click)="submitChoiceCode()" [disabled]="isSubmitingCode || isSavingCode" class="btn btn-dark btn-block my-0 ml-2">
+      <span *ngIf="!isSubmitingCode">Execute</span>
+      <mat-spinner *ngIf="isSubmitingCode" class="m-auto" [diameter]="30" color="primary"></mat-spinner>
+    </button>
 
   </div>
 
+</div>
+
+<div id="card-message" class="mt-2 mb-auto card-message">
+  <h3 class="m-0">{{errorMessage}}</h3>
 </div>

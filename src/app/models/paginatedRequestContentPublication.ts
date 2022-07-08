@@ -31,10 +31,13 @@ export class PaginatedRequestContentComment {
 export class Author {
   public id: string;
   public username: string;
+  public isFollowing: boolean;
 
-  constructor(id: string, username: string) {
+
+  constructor(id: string, username: string, isFollowing: boolean) {
     this.id = id;
     this.username = username;
+    this.isFollowing = isFollowing;
   }
 
 }

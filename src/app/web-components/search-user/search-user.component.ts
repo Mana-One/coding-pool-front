@@ -117,12 +117,19 @@ export class SearchUserComponent implements OnInit {
     }
   }
 
-  followUser(id: string): void {
-    this.socialService.followUser(id).subscribe(
-      value => {
 
-      }, error => {
-
-      });
+  followUser(user: Author): void {
+    if (user.isFollowing){
+      this.socialService.unFollowUser(user.id).subscribe(
+        value => {
+          user.isFollowing = false;
+        }
+      );
+    } else {
+      this.socialService.followUser(user.id).subscribe(
+        value => {
+          user.isFollowing = true;
+        });
+    }
   }
 }

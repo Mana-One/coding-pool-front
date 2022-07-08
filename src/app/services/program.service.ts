@@ -6,7 +6,7 @@ import {CodeLanguage} from '../models/code-language';
 import {ProgramSubmission} from '../models/program-submission';
 import {SubmissionResult} from '../models/submission-result';
 import {PaginatedRequestResultPrograms} from '../models/paginated-request-result-publication';
-import {ProgramCreation} from '../models/program-creation';
+import {ProgramContent, ProgramCreation, ProgramTitle} from '../models/program-creation';
 import {ProgramData} from '../models/program';
 
 @Injectable({
@@ -44,5 +44,13 @@ export class ProgramService {
 
   submitCode(submission: ProgramSubmission): Observable<SubmissionResult> {
     return this.http.post<SubmissionResult>( environment.api_code_execution_url + '/submissions?wait=true', submission);
+  }
+
+  changeProgramName(id: string, title: ProgramTitle): Observable<any>{
+    return this.http.put( environment.api_url + `/programs/title/${id}`, title);
+  }
+
+  saveProgram(id: string, content: ProgramContent): Observable<any>{
+    return this.http.put( environment.api_url + `/programs/content/${id}`, content);
   }
 }

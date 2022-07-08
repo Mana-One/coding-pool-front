@@ -8,7 +8,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {CodeLanguage} from '../../models/code-language';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ProgramCreation} from '../../models/program-creation';
+import {ProgramContent, ProgramCreation, ProgramTitle} from '../../models/program-creation';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-my-portfolio',
@@ -32,13 +33,17 @@ export class MyPortfolioComponent implements OnInit {
   codeLanguages: CodeLanguage[] = [];
   selectedLanguage: number;
   programCreationForm: FormGroup;
+  modifyProgramForm: FormGroup;
   type = 'me';
   isMe: boolean;
   userId: string;
+  selectedProgramId: string;
 
   @ViewChild('creationProgramForm', { static: true }) creationProgramForm: TemplateRef<any>;
   @ViewChild('awaitingCreationProgram', { static: true }) awaitingCreationProgram: TemplateRef<any>;
   @ViewChild('creationProgramRequestResult', { static: true }) creationProgramRequestResult: TemplateRef<any>;
+
+  @ViewChild('modifyProgramName', { static: true }) modifyProgramName: TemplateRef<any>;
 
   constructor(
     private programService: ProgramService,
@@ -67,6 +72,10 @@ export class MyPortfolioComponent implements OnInit {
     this.programCreationForm = new FormGroup({
       programName: new FormControl('', [Validators.required, Validators.minLength(3)]),
       programLanguageId: new FormControl('', [Validators.required])
+    });
+
+    this.modifyProgramForm = new FormGroup({
+      programName: new FormControl('', [Validators.required, Validators.minLength(3)]),
     });
   }
 
@@ -148,6 +157,7 @@ export class MyPortfolioComponent implements OnInit {
     }
     setTimeout(() => {
       this.createProgramError = '';
+      this.selectedProgramId = '';
     }, 500);
   }
 
@@ -158,7 +168,8 @@ export class MyPortfolioComponent implements OnInit {
   getListCodeLanguageAvailable(): void{
     this.programService.getListCodeLanguageAvailable().subscribe(
       value => {
-        this.codeLanguages = value;
+        const result = value.filter(c => c.id === 7 || c.id === 20);
+        this.codeLanguages = result;
       }, error => {
       });
   }
@@ -182,4 +193,30 @@ export class MyPortfolioComponent implements OnInit {
       }
     );
   }
+
+  openProgramModificationForm(program: Program): void {
+    this.selectedProgramId = program.id;
+    this.openDialog(this.modifyProgramName);
+  }
+
+  changeProgrameName(): void {
+    const programName = this.modifyProgramForm.controls.programName.value;
+    this.openDialog(this.awaitingCreationProgram);
+
+    this.programService.changeProgramName(this.selectedProgramId, new ProgramTitle(programName)).subscribe(
+      value => {
+        this.createProgramSuccess = true;
+        this.modifyProgramForm.controls.programName.setValue('');
+        this.modifyProgramForm.markAsUntouched();
+        this.openDialog(this.creationProgramRequestResult);
+      },
+      error => {
+        console.log(error);
+        this.createProgramError = error.message;
+        this.openDialog(this.creationProgramRequestResult);
+      }
+    );
+  }
+
+
 }

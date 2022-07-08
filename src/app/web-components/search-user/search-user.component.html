@@ -17,7 +17,9 @@
         <div class="col-12 col-md-6 w-100">
           <div class="mb-2">
             <button [routerLink]="userService.isConnectedUserOwner(user.id) ? '/my-account' :'/user/'+user.id" class="btn btn-block btn-dark">See profile</button>
-            <button (click)="followUser(user.id)" class="btn btn-block btn-success">Follow</button>
+            <button (click)="followUser(user)" class="btn btn-block" [ngClass]="user.isFollowing  ? 'btn-danger' : 'btn-success'">
+              {{user.isFollowing  ? 'Unfollow' : 'Follow' }}
+            </button>
           </div>
         </div>
       </div>

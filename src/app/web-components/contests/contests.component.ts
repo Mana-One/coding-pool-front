@@ -81,7 +81,8 @@ export class ContestsComponent implements OnInit {
   getListCodeLanguageAvailable(): void{
     this.programService.getListCodeLanguageAvailable().subscribe(
       value => {
-        this.codeLanguages = value;
+        const result = value.filter(c => c.id === 7 || c.id === 20);
+        this.codeLanguages = result;
       }, error => {
       });
   }

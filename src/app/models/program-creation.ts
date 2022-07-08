@@ -7,3 +7,20 @@ export class ProgramCreation {
     this.languageId = languageId;
   }
 }
+
+export class ProgramTitle {
+  public title: string;
+
+  constructor(title: string) {
+    this.title = title;
+  }
+}
+
+export class ProgramContent {
+  public content: string;
+
+  constructor(content: string) {
+    this.content = content;
+  }
+}
+

@@ -120,6 +120,7 @@ export class MyAccountComponent implements OnInit {
       cardMessage.style.opacity = '0';
       this.changePasswordAttemptFailed = false;
       const formValue = this.changePasswordForm.value;
+      this.isRequestingChangePassword = true;
       this.userService.changeUserPassword(new ChangePassword(formValue.oldPassword, formValue.newPassword, formValue.confirmNewPassword))
         .subscribe(
           value => {
@@ -132,6 +133,7 @@ export class MyAccountComponent implements OnInit {
             this.changePasswordAttemptFailed = true;
             cardMessage.classList.remove('card-success');
             cardMessage.classList.add('card-error');
+            this.isRequestingChangePassword = false;
           }, () => {
             this.isRequestingChangePassword = false;
             cardMessage.style.opacity = '1';

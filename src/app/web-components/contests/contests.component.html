@@ -8,16 +8,16 @@
 
   <div class="post-card rounded">
     <mat-radio-group aria-label="Select an option" color="primary" class="row w-100" (change)="getContestWithStatus($event)">
-      <div class="col-12 col-md-3">
+      <div class="col-12" [ngClass]="isAdmin ? 'col-md-3' : 'col-md-4'">
         <mat-radio-button class="salsa" [checked]="true" value="scheduled">Scheduled</mat-radio-button>
       </div>
-      <div class="col-12 col-md-3">
+      <div class="col-12" [ngClass]="isAdmin ? 'col-md-3' : 'col-md-4'">
         <mat-radio-button class="salsa" value="current">Current</mat-radio-button>
       </div>
-      <div class="col-12 col-md-3">
+      <div class="col-12" [ngClass]="isAdmin ? 'col-md-3' : 'col-md-4'">
         <mat-radio-button class="salsa" value="ended">Ended</mat-radio-button>
       </div>
-      <div class="col-12 col-md-3">
+      <div *ngIf="isAdmin" class="col-12 col-md-3">
         <mat-radio-button class="salsa" value="published">Published</mat-radio-button>
       </div>
     </mat-radio-group>

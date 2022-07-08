@@ -10,8 +10,11 @@
   <div class="row p-0 m-0" *ngIf="lastRequestResult">
     <div class="post-card rounded col-12 col-md-6 sized" *ngFor='let program of programs'>
       <div class="row">
-        <div class="col-12 w-100">
-          <div class="d-flex ml-auto" style="width: fit-content;">
+        <div class="col-12 w-100 d-flex">
+          <mat-icon class=" mr-auto icone" style="height: auto" (click)="openProgramModificationForm(program)"><i class="material-icons">edit</i></mat-icon>
+
+          <div class="d-flex ml-auto" >
+
             <mat-icon><i class="material-icons">access_time</i></mat-icon>
             <span>{{getDate(program.createdAt)}}</span>
           </div>
@@ -79,7 +82,7 @@
 </ng-template>
 
 <ng-template #awaitingCreationProgram>
-  <h1 mat-dialog-title class="card-title">Creating the program ..</h1>
+  <h1 mat-dialog-title class="card-title"> {{selectedProgramId ? 'Modifying title' : 'Creating the program'}} ..</h1>
   <div class="d-flex" mat-dialog-content>
     <mat-spinner class="m-auto"></mat-spinner>
   </div>
@@ -89,10 +92,30 @@
   <h1 mat-dialog-title class="card-title">{{createProgramError ? 'Error' : 'Success'}}</h1>
   <div class="d-flex" mat-dialog-content>
     <span class="text-center">
-      {{createProgramError ? createProgramError: 'The program has successfully been created !'}}
+      {{createProgramError ? createProgramError: (selectedProgramId ? 'Title successfully modified' : 'The program has successfully been created !')}}
     </span>
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
+  </div>
+</ng-template>
+
+
+<ng-template #modifyProgramName>
+  <h1 mat-dialog-title class="card-title">Modify the program title !</h1>
+  <div class="d-flex row" mat-dialog-content>
+    <div class="col-12" [formGroup]="modifyProgramForm">
+
+      <mat-form-field class="w-100 d-block" appearance="outline">
+        <input matInput [formControlName]="'programName'" type="text" placeholder="Program title ..."/>
+        <mat-error *ngIf="modifyProgramForm.controls.programName.hasError('required')">This field is required</mat-error>
+        <mat-error *ngIf="modifyProgramForm.controls.programName.hasError('minlength')">Minimal length is 3 characters</mat-error>
+      </mat-form-field>
+
+    </div>
+    <div class="col-12 d-flex mt-2">
+      <button class="btn btn-block btn-dark py-2 mr-2 my-0" (click)="closePopUp()">Cancel</button>
+      <button class="btn btn-block btn-success py-2 ml-2 my-0" [disabled]="modifyProgramForm.invalid" (click)="changeProgrameName()">Modify</button>
+    </div>
   </div>
 </ng-template>

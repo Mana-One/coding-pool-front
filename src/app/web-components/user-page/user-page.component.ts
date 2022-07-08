@@ -3,6 +3,7 @@ import {UserService} from '../../services/user.service';
 import {Observable} from 'rxjs';
 import {UserStats} from '../../models/user-stats';
 import {ProgramService} from '../../services/program.service';
+import {SocialNetworkService} from '../../services/social-network.service';
 
 @Component({
   selector: 'app-user-page',
@@ -15,17 +16,22 @@ export class UserPageComponent implements OnInit {
   @Input() userId;
   userStats: UserStats;
   error: string;
+
   constructor(
     private userService: UserService,
-  ) { }
+    private socialService: SocialNetworkService
+  ) {
+  }
+
   panelOpenState = false;
   notMe = false;
+
   ngOnInit(): void {
     this.getUserState();
     this.notMe = this.stateFor === 'user';
   }
 
-  getUserState(): void{
+  getUserState(): void {
     this.error = null;
     switch (this.stateFor) {
       case 'home':
@@ -43,7 +49,7 @@ export class UserPageComponent implements OnInit {
     }
   }
 
-  handleUserStateGet(request: Observable<UserStats>): void{
+  handleUserStateGet(request: Observable<UserStats>): void {
     request.subscribe(value => {
       this.userStats = value;
     }, error => {
@@ -51,4 +57,18 @@ export class UserPageComponent implements OnInit {
     });
   }
 
+  followUser(): void {
+    if (this.userStats.isFollowing){
+      this.socialService.unFollowUser(this.userStats.id).subscribe(
+        value => {
+          this.userStats.isFollowing = false;
+        }
+      );
+    } else {
+      this.socialService.followUser(this.userStats.id).subscribe(
+        value => {
+          this.userStats.isFollowing = true;
+        });
+    }
+  }
 }

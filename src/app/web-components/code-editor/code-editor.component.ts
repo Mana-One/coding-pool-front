@@ -7,7 +7,7 @@ import {ActivatedRoute} from '@angular/router';
 import {ContestService} from '../../services/contest.service';
 import {CodeContest} from '../../models/code-contest';
 import {ProgramData} from '../../models/program';
-import {FormControl, FormGroup} from '@angular/forms';
+import {ProgramContent} from '../../models/program-creation';
 
 @Component({
   selector: 'app-code-editor',
@@ -28,6 +28,9 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   langageName: string;
   @Input() langId: number;
   @Input() contestId: string;
+  isSubmitingCode = false;
+  isSavingCode = false;
+  errorMessage = '';
 
   @ViewChild('editor') private editor: ElementRef<HTMLElement>;
   @ViewChild('input') private input: ElementRef<HTMLElement>;
@@ -66,7 +69,8 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   getListCodeLanguageAvailable(): void{
     this.programService.getListCodeLanguageAvailable().subscribe(
       value => {
-        this.codeLanguages = value;
+        const result = value.filter(c => c.id === 7 || c.id === 20);
+        this.codeLanguages = result;
         if (this.langId){
           this.selectedLanguage = this.langId;
         }
@@ -94,13 +98,21 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   }
 
   submitCode(): void{
+    const code = this.aceEditor.session.getValue();
+    this.programService.saveProgram(this.programmeId, new ProgramContent(code)).subscribe(
+      value => {}
+    );
     const programVariables = this.aceEditorInput.session.getValue();
     const programSubmission = new ProgramSubmission(this.aceEditor.session.getValue(), this.selectedLanguage, programVariables);
     this.showWaitingBar();
     this.programService.submitCode(programSubmission).subscribe(
       value => {
         this.hideWaitingBar();
-        this.aceEditorOutput.setValue(value.stdout);
+        if (value.status.id > 3){
+          this.aceEditorOutput.setValue( value.status.description + '\n' + value.compile_output);
+        } else {
+          this.aceEditorOutput.setValue(value.stdout);
+        }
       }, error => {
         this.hideWaitingBar();
       });
@@ -205,5 +217,24 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
     this.aceEditor.setTheme('ace/theme/' + event);
     this.aceEditorInput.setTheme('ace/theme/' + event);
     this.aceEditorOutput.setTheme('ace/theme/' + event);
+  }
+
+  saveCode(): void {
+    this.isSubmitingCode = false;
+    this.isSavingCode = true;
+    const code = this.aceEditor.session.getValue();
+    this.programService.saveProgram(this.programmeId, new ProgramContent(code)).subscribe(
+      value => {
+        this.isSavingCode = false;
+      },error => {
+        this.isSavingCode = false;
+      }
+    );
+
+    const cardMessage = document.getElementById('card-message');
+    cardMessage.style.opacity = '0';
+
+    cardMessage.classList.remove('card-error');
+    cardMessage.classList.add('card-success');
   }
 }

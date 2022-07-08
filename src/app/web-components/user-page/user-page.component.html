@@ -49,7 +49,9 @@
 
     </mat-expansion-panel>
     <div *ngIf="notMe" class="mt-1">
-      <button class="btn btn-block btn-success">follow</button>
+      <button (click)="followUser()" class="btn btn-block" [ngClass]="userStats.isFollowing  ? 'btn-danger' : 'btn-success'">
+        {{userStats.isFollowing  ? 'Unfollow' : 'Follow' }}
+      </button>
     </div>
   </mat-accordion>
 
