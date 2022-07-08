@@ -69,7 +69,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   getListCodeLanguageAvailable(): void{
     this.programService.getListCodeLanguageAvailable().subscribe(
       value => {
-        const result = value.filter(c => c.id === 7 || c.id === 20);
+        const result = value.filter(c => c.id === 1 || c.id === 24);
         this.codeLanguages = result;
         if (this.langId){
           this.selectedLanguage = this.langId;

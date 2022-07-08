@@ -24,6 +24,7 @@ export class ContestComponent implements OnInit {
   contestLeaderBoard: Classement[];
   panelOpenState = false;
   codeLanguages: CodeLanguage[] = [];
+  contestEnded = false;
 
   constructor(
     private contestService: ContestService,
@@ -46,6 +47,7 @@ export class ContestComponent implements OnInit {
     this.contestService.getContestRule(this.contestId).subscribe(
       value => {
         this.contestRule = value;
+        this.contestEnded = this.isInThePast(new Date(value.endDate));
         this.searchingContestRule = false;
       },
       error => {
@@ -53,6 +55,12 @@ export class ContestComponent implements OnInit {
         this.searchingContestRule = false;
       }
     );
+  }
+
+  isInThePast(date: Date): boolean {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return date < today;
   }
 
   getContestLeaderBoard(): void{
@@ -85,7 +93,8 @@ export class ContestComponent implements OnInit {
   getListCodeLanguageAvailable(): void{
     this.programService.getListCodeLanguageAvailable().subscribe(
       value => {
-        this.codeLanguages = value;
+        const result = value.filter(c => c.id === 1 || c.id === 24);
+        this.codeLanguages = result;
       }, error => {
       });
   }

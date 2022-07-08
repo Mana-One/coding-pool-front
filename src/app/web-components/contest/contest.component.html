@@ -69,4 +69,4 @@
 
 
 
-<app-code-editor *ngIf="contestRule" [contestId]="contestId" [langId]="contestRule.languageId"></app-code-editor>
+<app-code-editor *ngIf="contestRule && !contestEnded" [contestId]="contestId" [langId]="contestRule.languageId"></app-code-editor>
