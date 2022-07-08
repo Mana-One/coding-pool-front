@@ -78,3 +78,35 @@
 .icone{
   cursor: pointer;
 }
+
+.edit-share{
+  width: 75%;
+  margin-right: auto;
+}
+
+.share{
+  width: 20%;
+  margin-top: 0;
+}
+
+::ng-deep .dialog-container-custom {
+  width: 50vw;
+  .mat-dialog-container{
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  ::ng-deep .dialog-container-custom {
+    width: 80vw;
+    .mat-dialog-container{
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  ::ng-deep .dialog-container-custom {
+    width: 100vw;
+    .mat-dialog-container{
+    }
+  }
+}

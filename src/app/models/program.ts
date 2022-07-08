@@ -15,14 +15,14 @@ export class ProgramData {
   public title: string;
   public content: string;
   public languageId: number;
-  public authorI: string;
+  public authorId: string;
 
 
-  constructor(id: string, title: string, content: string, languageId: number, authorI: string) {
+  constructor(id: string, title: string, content: string, languageId: number, authorId: string) {
     this.id = id;
     this.title = title;
     this.content = content;
     this.languageId = languageId;
-    this.authorI = authorI;
+    this.authorId = authorId;
   }
 }

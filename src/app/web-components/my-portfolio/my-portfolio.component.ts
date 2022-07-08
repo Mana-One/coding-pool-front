@@ -8,8 +8,9 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
 import {CodeLanguage} from '../../models/code-language';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ProgramContent, ProgramCreation, ProgramTitle} from '../../models/program-creation';
-import {environment} from '../../../environments/environment';
+import {ProgramCreation, ProgramTitle} from '../../models/program-creation';
+import {PublicationCreation} from '../../models/publicationCreation';
+import {SocialNetworkService} from '../../services/social-network.service';
 
 @Component({
   selector: 'app-my-portfolio',
@@ -34,23 +35,31 @@ export class MyPortfolioComponent implements OnInit {
   selectedLanguage: number;
   programCreationForm: FormGroup;
   modifyProgramForm: FormGroup;
+  shareProgramForm: FormGroup;
   type = 'me';
   isMe: boolean;
   userId: string;
   selectedProgramId: string;
+  addPublicationError = '';
+  addPublicationSuccess = false;
 
   @ViewChild('creationProgramForm', { static: true }) creationProgramForm: TemplateRef<any>;
   @ViewChild('awaitingCreationProgram', { static: true }) awaitingCreationProgram: TemplateRef<any>;
   @ViewChild('creationProgramRequestResult', { static: true }) creationProgramRequestResult: TemplateRef<any>;
 
   @ViewChild('modifyProgramName', { static: true }) modifyProgramName: TemplateRef<any>;
+  @ViewChild('shareProgramFormPopup', { static: true }) shareProgramFormPopup: TemplateRef<any>;
+
+  @ViewChild('awaitingPublicationRequestSend', { static: true }) awaitingPublicationRequestSend: TemplateRef<any>;
+  @ViewChild('creationPublicationRequestResult', { static: true }) creationPublicationRequestResult: TemplateRef<any>;
 
   constructor(
     private programService: ProgramService,
     private scrollService: ScrollService,
     private router: Router,
     private dialog: MatDialog,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private socialNetworkService: SocialNetworkService
   ) { }
 
   ngOnInit(): void {
@@ -76,6 +85,10 @@ export class MyPortfolioComponent implements OnInit {
 
     this.modifyProgramForm = new FormGroup({
       programName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    });
+
+    this.shareProgramForm = new FormGroup({
+      publication: new FormControl('', [Validators.required, Validators.minLength(30)])
     });
   }
 
@@ -159,6 +172,8 @@ export class MyPortfolioComponent implements OnInit {
       this.createProgramError = '';
       this.selectedProgramId = '';
     }, 500);
+    this.programCreationForm.markAsUntouched();
+    this.modifyProgramForm.markAsUntouched();
   }
 
   openProgramCreationForm(): void {
@@ -219,4 +234,38 @@ export class MyPortfolioComponent implements OnInit {
   }
 
 
+  shareProgram(): void {
+    const publicationText = this.shareProgramForm.controls.publication.value;
+    this.openDialog(this.awaitingPublicationRequestSend);
+    this.socialNetworkService.createPublication(new PublicationCreation(publicationText)).subscribe(
+      value => {
+        this.addPublicationSuccess = true;
+        this.shareProgramForm.controls.publication.setValue('');
+        this.openDialog(this.creationPublicationRequestResult);
+      },
+      error => {
+        console.log(error);
+        this.addPublicationError = error.message;
+        this.openDialog(this.creationPublicationRequestResult);
+      }
+    );
+  }
+
+
+  openShareProgram(program: Program): void {
+    this.addPublicationSuccess = false;
+    this.addPublicationError = '';
+    this.shareProgramForm.controls.publication.setValue(
+      'Hi see my new programs: ' + program.title + ' ! use this link to directly access my code !' +
+      '\n' + location.origin + '/program/' + program.id
+    );
+    this.dialog.open(this.shareProgramFormPopup, {
+      disableClose: true,
+      maxWidth: 'auto',
+      minWidth: '50%',
+      maxHeight: 'auto',
+      minHeight: '60%',
+      panelClass: 'dialog-container-custom'
+    });
+  }
 }

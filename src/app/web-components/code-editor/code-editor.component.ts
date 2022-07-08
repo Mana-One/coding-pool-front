@@ -8,6 +8,7 @@ import {ContestService} from '../../services/contest.service';
 import {CodeContest} from '../../models/code-contest';
 import {ProgramData} from '../../models/program';
 import {ProgramContent} from '../../models/program-creation';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-code-editor',
@@ -32,6 +33,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   isSavingCode = false;
   errorMessage = '';
   token: string;
+  isMe = false;
 
   @ViewChild('editor') private editor: ElementRef<HTMLElement>;
   @ViewChild('input') private input: ElementRef<HTMLElement>;
@@ -40,7 +42,8 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   constructor(
     private programService: ProgramService,
     private activatedRoute: ActivatedRoute,
-    private contestService: ContestService
+    private contestService: ContestService,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -59,6 +62,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
         this.program = value;
         this.aceEditor.session.setValue(value.content);
         this.selectedLanguage = value.languageId;
+        this.isMe = value.authorId === this.userService.connectedUserId;
       }
     );
   }
@@ -123,10 +127,13 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
 
 
   submitCode(): void{
+    this.isSubmitingCode = true;
     const code = this.aceEditor.session.getValue();
-    this.programService.saveProgram(this.programmeId, new ProgramContent(code)).subscribe(
-      value => {}
-    );
+    if (this.isMe){
+      this.programService.saveProgram(this.programmeId, new ProgramContent(code)).subscribe(
+        value => {}
+      );
+    }
     const programVariables = this.aceEditorInput.session.getValue();
     const programSubmission = new ProgramSubmission(this.aceEditor.session.getValue(), this.selectedLanguage, programVariables);
     this.showWaitingBar();
@@ -138,8 +145,10 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
         } else {
           this.aceEditorOutput.setValue(value.stdout);
         }
+        this.isSubmitingCode = false;
       }, error => {
         this.hideWaitingBar();
+        this.isSubmitingCode = false;
       });
   }
 

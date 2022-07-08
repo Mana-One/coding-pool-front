@@ -62,7 +62,7 @@
 
 
 
-  <div class="my-card rounded d-flex">
+  <div class="my-card rounded d-flex" *ngIf="isMe">
 
     <button *ngIf="!contestId" (click)="saveCode()" [disabled]="isSubmitingCode || isSavingCode" class="btn btn-success btn-block my-0 mr-2">
       <span *ngIf="!isSavingCode">Save</span>
@@ -70,6 +70,15 @@
     </button>
 
     <button (click)="submitChoiceCode()" [disabled]="isSubmitingCode || isSavingCode" class="btn btn-dark btn-block my-0 ml-2">
+      <span *ngIf="!isSubmitingCode">Execute</span>
+      <mat-spinner *ngIf="isSubmitingCode" class="m-auto" [diameter]="30" color="primary"></mat-spinner>
+    </button>
+
+  </div>
+
+  <div class="my-card rounded d-flex" *ngIf="!isMe">
+
+    <button (click)="submitCode()" [disabled]="isSubmitingCode" class="btn btn-dark btn-block my-0 ml-2">
       <span *ngIf="!isSubmitingCode">Execute</span>
       <mat-spinner *ngIf="isSubmitingCode" class="m-auto" [diameter]="30" color="primary"></mat-spinner>
     </button>

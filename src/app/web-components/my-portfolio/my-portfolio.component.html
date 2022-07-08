@@ -23,8 +23,11 @@
           <mat-icon><i class="material-icons custom-size">folder</i></mat-icon>
           <span class="truncate name">{{program.title}}</span>
         </div>
-        <div class="col-12">
-          <button class="btn btn-block btn-dark" (click)="editProgram(program.id)">Edit program</button>
+        <div class="col-12 d-flex">
+          <button class="btn btn-block btn-dark edit-share" [ngClass]="isMe  ? 'edit-share' : ''" (click)="editProgram(program.id)">Edit program</button>
+          <button *ngIf="isMe" class="btn btn-block btn-success share " (click)="openShareProgram(program)">
+            <mat-icon class=" mr-auto icone m-auto" style="height: auto;width: fit-content"><i class="material-icons">screen_share</i></mat-icon>
+          </button>
         </div>
       </div>
     </div>
@@ -117,5 +120,45 @@
       <button class="btn btn-block btn-dark py-2 mr-2 my-0" (click)="closePopUp()">Cancel</button>
       <button class="btn btn-block btn-success py-2 ml-2 my-0" [disabled]="modifyProgramForm.invalid" (click)="changeProgrameName()">Modify</button>
     </div>
+  </div>
+</ng-template>
+
+
+<ng-template #shareProgramFormPopup>
+  <h1 mat-dialog-title class="card-title">Share your program</h1>
+  <div mat-dialog-content [formGroup]="shareProgramForm">
+    <mat-form-field class="w-100 m-auto d-block" appearance="outline">
+      <textarea [formControlName]="'publication'" style="height: 300px" matInput placeholder="publication text ..."></textarea>
+      <mat-error *ngIf="shareProgramForm.controls.publication.hasError('required')">This field is required</mat-error>
+      <mat-error *ngIf="shareProgramForm.controls.publication.hasError('minlength')">Minimal length is 30 characters</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="d-flex justify-content-between">
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close class="btn btn-block btn-danger" (click)="closePopUp()">Cancel</button>
+    </div>
+    <div mat-dialog-actions>
+      <button [disabled]="shareProgramForm.invalid" mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="shareProgram()">Share</button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #awaitingPublicationRequestSend>
+  <h1 mat-dialog-title class="card-title">Creation of the publication ..</h1>
+  <div class="d-flex" mat-dialog-content>
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+</ng-template>
+
+<ng-template #creationPublicationRequestResult>
+  <h1 mat-dialog-title class="card-title">{{addPublicationError ? 'Error' : 'Success'}}</h1>
+  <div class="d-flex" mat-dialog-content>
+    <span class="text-center">
+      {{addPublicationError ? addPublicationError: 'The publication has successfully been created !'}}
+    </span>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
   </div>
 </ng-template>
