@@ -16,6 +16,7 @@ export class UserService {
 
   connectedUserId: string;
   connectedUserRole: string;
+  connectedUserPicture: string;
   helper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
@@ -29,7 +30,17 @@ export class UserService {
   }
 
   changeUserInformations(editAccount: EditAccount): Observable<any>{
-    return this.http.put( environment.api_url + '/accounts/me', editAccount);
+    const res: any = {};
+    if (editAccount.email === '' || editAccount.email === null){
+      res.email = editAccount.email;
+    }
+    if (editAccount.username === '' || editAccount.username === null){
+      res.username = editAccount.username;
+    }
+    if (editAccount.picture === '' || editAccount.picture === null){
+      res.picture = editAccount.picture;
+    }
+    return this.http.put( environment.api_url + '/accounts/me', res);
   }
 
   getConnectedUserStats(): Observable<UserStats>{
@@ -50,6 +61,7 @@ export class UserService {
 
   setConnectedUserInfoFromToken(token: any): void{
     const decodedToken = this.helper.decodeToken(token);
+    console.log(decodedToken)
     this.connectedUserId = decodedToken.sub;
     this.connectedUserRole = decodedToken.role;
   }
@@ -62,4 +74,12 @@ export class UserService {
     return this.connectedUserRole === 'admin';
   }
 
+  setProfilPicture(picture: string): void {
+    this.connectedUserPicture = picture;
+    localStorage.setItem('picture', picture);
+  }
+
+  getProfilPicture(): string {
+    return localStorage.getItem('picture');
+  }
 }

@@ -103,8 +103,8 @@ export class MyAccountComponent implements OnInit {
 
   initEditAccountForm(): void{
     this.editAccountForm = new FormGroup({
-      newUserName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
-      newEmail: new FormControl('', [Validators.required, Validators.email]),
+      newUserName: new FormControl('', [ Validators.minLength(3), Validators.maxLength(32)]),
+      newEmail: new FormControl('', [ Validators.email]),
     });
   }
 
@@ -240,8 +240,13 @@ export class MyAccountComponent implements OnInit {
   editAccount(): void {
     const newUsername = this.editAccountForm.controls.newUserName.value;
     const newEmail = this.editAccountForm.controls.newEmail.value;
+    if ( (newUsername === '' || newUsername === null) &&
+      (newEmail === '' || newEmail === null) ){
+      this.closePopUp();
+      return;
+    }
     this.openDialog(this.awaitingModifyAccount);
-    this.userService.changeUserInformations(new EditAccount(newUsername, newEmail)).subscribe(
+    this.userService.changeUserInformations(new EditAccount(newUsername, newEmail, '')).subscribe(
       value => {
         this.modifyAccountSuccess = true;
         this.editAccountForm.controls.newUserName.setValue('');

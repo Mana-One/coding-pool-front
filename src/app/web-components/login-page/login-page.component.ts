@@ -56,11 +56,17 @@ export class LoginPageComponent implements OnInit {
           console.log(token)
           this.authentificationService.saveToken(token.access_token);
           this.userSevice.setConnectedUserInfoFromToken(token.access_token);
-          if (this.userSevice.isConnectedUserAdmin()){
-            this.router.navigate(['/create-admin']);
-          }else{
-            this.router.navigate(['/my-account']);
-          }
+          this.userSevice.getConnectedUserInfo().subscribe(
+            value => {
+              this.userSevice.setProfilPicture(value.picture);
+              if (this.userSevice.isConnectedUserAdmin()){
+                this.router.navigate(['/create-admin']);
+              }else{
+                this.router.navigate(['/my-account']);
+              }
+            }
+          );
+
         },
         error => {
           console.log(error);

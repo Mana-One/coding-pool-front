@@ -2,7 +2,9 @@
   <mat-sidenav-container [hasBackdrop]="backDrop" (backdropClick)="closeSideBar()" class="mat-typography w-100 h-100 sidebar-bg">
     <mat-sidenav [opened]="sideBarExpended" [mode]="sideBarMode" [position]="sideBarPosition" class="side-nav-desktop" autosize>
       <div class="logo-container">
-        <img class="logo-full" src="assets/images/logo_white.svg">
+        <img *ngIf="!userPicture" class="logo-half" src="assets/images/logo_white.svg">
+        <img *ngIf="userPicture " class="user-half" [src]="userPicture">
+        <img *ngIf="userPicture" class="logo-full ml-0"  src="assets/images/logo_white_text.svg">
       </div>
       <mat-nav-list *ngIf="userMode == 'user'">
         <mat-list-item *ngIf="showReduce" (click)="reduceSideBar()">
@@ -64,7 +66,8 @@
       <mat-sidenav-container [hasBackdrop]="false" class="mat-typography w-100 h-100 sidebar-bg" autosize>
         <mat-sidenav [opened]="sideBarHalfExpended" [mode]="sideBarMode" [position]="sideBarPosition">
           <div class="logo-container">
-            <img class="logo-half" src="assets/images/logo_no_text.svg">
+            <img *ngIf="!userPicture" class="logo-half" src="assets/images/logo_no_text.svg">
+            <img *ngIf="userPicture" class="user-half" [src]="userPicture">
           </div>
           <mat-nav-list *ngIf="userMode == 'user'">
             <mat-list-item *ngIf="showReduce" (click)="extendSideBar()">

@@ -11,7 +11,11 @@
     <div class="post-card rounded" *ngFor='let user of users'>
       <div class="row">
         <div class="icone col-12 col-md-6">
-          <mat-icon><i class="material-icons custom-size">account_box</i></mat-icon>
+
+          <mat-icon *ngIf="user.picture == null"><i class="material-icons custom-size">account_box</i></mat-icon>
+
+          <img *ngIf="user.picture !== null" class="mr-3" [src]="user.picture">
+
           <span class="span-no-left truncate name">{{user.username}}</span>
         </div>
         <div class="col-12 col-md-6 w-100">

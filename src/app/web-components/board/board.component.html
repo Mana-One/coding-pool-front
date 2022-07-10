@@ -17,7 +17,10 @@
 
     <div class="post-card rounded" *ngFor='let publication of publications'>
       <div class="d-flex">
-        <div><img height="80px" src="assets/images/bouee.png"></div>
+        <div>
+          <img *ngIf="publication.author.picture == null" height="80px" src="assets/images/bouee.png">
+          <img *ngIf="publication.author.picture !== null" class="my-img" [src]="publication.author.picture">
+        </div>
         <div class="publication-content">
           {{publication.content}}
         </div>
@@ -29,10 +32,9 @@
         <button class="btn btn-block btn-dark">see publication</button>
       </div>
       <div class="row m-0 p-0">
-        <div class="col-6 col-md-4 d-grid mt-2">
+        <div class="col-6 col-md-4 d-grid mt-2 pl-md-0">
           <div class="d-flex">
-            <mat-icon><i class="material-icons">account_box</i></mat-icon>
-            <a [routerLink]="userService.isConnectedUserOwner(publication.author.id) ? '/my-account' :'/user/'+publication.author.id"  class="link"><span>{{publication.author.username}}</span></a>
+            <a [routerLink]="userService.isConnectedUserOwner(publication.author.id) ? '/my-account' :'/user/'+publication.author.id"  class="link"><span class="m-0">{{publication.author.username ? publication.author.username : 'me'}}</span></a>
           </div>
         </div>
         <div class="col-6 col-md-2 d-grid mt-2">

@@ -6,10 +6,11 @@ export class UserStats {
   public following: number;
   public programs: number;
   public isFollowing: boolean;
+  public picture: string;
   public competitions_entered: number;
   public competitions_won: number;
 
-  constructor(id: string, username: string, memberSince: string, followers: number, following: number, programs: number, isFollowing: boolean, competitions_entered: number, competitions_won: number) {
+  constructor(id: string, username: string, memberSince: string, followers: number, following: number, programs: number, isFollowing: boolean, picture: string, competitions_entered: number, competitions_won: number) {
     this.id = id;
     this.username = username;
     this.memberSince = memberSince;
@@ -17,6 +18,7 @@ export class UserStats {
     this.following = following;
     this.programs = programs;
     this.isFollowing = isFollowing;
+    this.picture = picture;
     this.competitions_entered = competitions_entered;
     this.competitions_won = competitions_won;
   }

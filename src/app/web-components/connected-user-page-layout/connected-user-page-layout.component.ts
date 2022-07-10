@@ -22,11 +22,14 @@ export class ConnectedUserPageLayoutComponent implements OnInit, AfterContentIni
   scrollHiddenPages = ['/program'];
   scrollHidden = false;
   userMode: string;
+  userPicture: string;
+  screenSize: number;
 
   constructor(
     private scrollService: ScrollService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
+    private userService: UserService
   ) { }
 
   ngOnInit(): void {
@@ -38,6 +41,9 @@ export class ConnectedUserPageLayoutComponent implements OnInit, AfterContentIni
         this.isScrollHidden();
       }
     });
+    this.userPicture = this.userService.getProfilPicture() ;
+    this.userPicture = this.userPicture == 'null' ? null : this.userPicture;
+
     const dummyEvent = {
       target: {
         innerWidth: window.innerWidth
@@ -66,7 +72,7 @@ export class ConnectedUserPageLayoutComponent implements OnInit, AfterContentIni
 
   @HostListener('window:resize', ['$event'])
   onResizeScreen(event): void {
-
+    this.screenSize = event.target.innerWidth;
     if (event.target.innerWidth <= 550){
       this.backDrop = true;
       this.sideBarMode = 'over';
@@ -83,20 +89,25 @@ export class ConnectedUserPageLayoutComponent implements OnInit, AfterContentIni
       this.backDrop = false;
       this.sideBarMode = 'side';
       this.showReduce = true;
+      this.reduceSideBar();
     }
   }
 
   reduceSideBar(): void {
     this.sideBarExpended = false;
     setTimeout(() => {
-      this.sideBarHalfExpended = true;
+      if (this.screenSize > 500){
+        this.sideBarHalfExpended = true;
+      }
     }, 500);
   }
 
   extendSideBar(): void {
     this.sideBarHalfExpended = false;
     setTimeout(() => {
-      this.sideBarExpended = true;
+      if (this.screenSize > 500){
+        this.sideBarExpended = true;
+      }
     }, 500);
   }
 
@@ -111,7 +122,7 @@ export class ConnectedUserPageLayoutComponent implements OnInit, AfterContentIni
   }
 
   scrollFunction(): void {
-    if (this.scrollHidden === false){
+    if (this.scrollHidden === false && this.mybutton){
       this.calculateScrollPercentage();
       if (this.content.scrollTop > 20) {
         this.mybutton.style.display = 'block';

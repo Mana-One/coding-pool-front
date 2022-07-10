@@ -136,3 +136,11 @@
     }
   }
 }
+
+.my-img{
+  width: 80px;
+  height: 80px;
+  border-radius: .2rem;
+  object-fit: cover;
+  object-position: 50% 50%;
+}

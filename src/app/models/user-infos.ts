@@ -1,14 +1,14 @@
 export class UserInfos {
   public id: string;
   public username: string;
-  public wallet: string;
+  public picture: string;
   public email: string;
   public role: string;
 
-  constructor(id: string, username: string, wallet: string, email: string, role: string) {
+  constructor(id: string, username: string, picture: string, email: string, role: string) {
     this.id = id;
     this.username = username;
-    this.wallet = wallet;
+    this.picture = picture;
     this.email = email;
     this.role = role;
   }

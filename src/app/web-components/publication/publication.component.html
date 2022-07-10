@@ -4,14 +4,16 @@
     <div *ngIf="publication" class="d-flex">
       <div class="icone d-none d-md-block">
         <a [routerLink]="userService.isConnectedUserOwner(publication.author.id) ? '/my-account' :'/user/'+publication.author.id" class="link">
-          <mat-icon><i class="material-icons custom-size">account_box</i></mat-icon>
+          <mat-icon *ngIf="publication.author.picture == null"><i class="material-icons custom-size">account_box</i></mat-icon>
+          <img *ngIf="publication.author.picture !== null" class="my-img2" [src]="publication.author.picture">
         </a>
       </div>
       <div class="ml-0 ml-md-2 w-100">
         <div class="row d-flex justify-content-end mx-0 mt-0 mb-2 p-0">
           <div class="col-6 col-md-8 d-grid mt-2 p-0 truncate-flex">
             <div class="d-flex ">
-              <mat-icon class="d-md-none"><i class="material-icons">account_box</i></mat-icon>
+              <mat-icon *ngIf="publication.author.picture == null" class="d-md-none"><i class="material-icons">account_box</i></mat-icon>
+              <img *ngIf="publication.author.picture !== null" class="my-img-sm d-md-none" [src]="publication.author.picture">
               <a [routerLink]="userService.isConnectedUserOwner(publication.author.id) ? '/my-account' :'/user/'+publication.author.id" class="link"><span class="span-no-left truncate">{{publication.author.username}}</span></a>
             </div>
           </div>
@@ -64,14 +66,16 @@
       <div class="d-flex">
         <div class="icone d-none d-md-block">
           <a [routerLink]="userService.isConnectedUserOwner(comment.leftBy.id) ? '/my-account' :'/user/' + comment.leftBy.id" class="link">
-            <mat-icon><i class="material-icons custom-size">account_box</i></mat-icon>
+            <mat-icon *ngIf="comment.leftBy.picture == null"><i class="material-icons custom-size">account_box</i></mat-icon>
+            <img *ngIf="comment.leftBy.picture !== null" class="my-img2" [src]="publication.author.picture">
           </a>
         </div>
         <div class="ml-0 ml-md-2 w-100">
           <div class="row d-flex justify-content-end mx-0 mt-0 mb-2 p-0">
             <div class="col-6 col-md-8 d-grid mt-2 p-0 truncate-flex">
               <div class="d-flex ">
-                <mat-icon class="d-md-none"><i class="material-icons">account_box</i></mat-icon>
+                <mat-icon *ngIf="comment.leftBy.picture == null" class="d-md-none"><i class="material-icons">account_box</i></mat-icon>
+                <img *ngIf="comment.leftBy.picture !== null" class="my-img-sm d-md-none" [src]="publication.author.picture">
                 <a [routerLink]="userService.isConnectedUserOwner(comment.leftBy.id) ? '/my-account' :'/user/' + comment.leftBy.id" class="link"><span class="span-no-left truncate">{{comment.leftBy.username}}</span></a>
               </div>
             </div>

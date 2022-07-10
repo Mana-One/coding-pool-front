@@ -39,3 +39,20 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.my-img2{
+  width: 60px;
+  height: 60px;
+  border-radius: .2rem;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.my-img-sm{
+  width: 20px;
+  height: 20px;
+  border-radius: .2rem;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+

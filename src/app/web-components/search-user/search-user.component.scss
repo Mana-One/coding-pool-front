@@ -44,6 +44,13 @@
       font-size: 60px;
     }
   }
+  img{
+    width: 60px;
+    height: 60px;
+    border-radius: .2rem;
+    object-fit: cover;
+    object-position: 50% 50%;
+  }
 }
 
 .name{

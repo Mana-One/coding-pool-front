@@ -4,11 +4,14 @@
     <mat-expansion-panel [expanded]="panelOpenState">
       <mat-expansion-panel-header>
         <mat-panel-title>
+          <mat-icon class="mr-3" *ngIf="userStats.picture == null"><i class="material-icons custom-size">account_box</i></mat-icon>
+
+          <img *ngIf="userStats.picture !== null" class="mr-3 my-img" [src]="userStats.picture">
           <h3 class="info-title p-0 m-0">{{userStats.username}}</h3>
         </mat-panel-title>
         <mat-panel-description>
           <div class="my-auto">
-            Click to see some general informations
+            General informations
           </div>
         </mat-panel-description>
       </mat-expansion-panel-header>
