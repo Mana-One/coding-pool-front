@@ -29,6 +29,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   langageName: string;
   @Input() langId: number;
   @Input() contestId: string;
+  @Input() userCode: string;
   isSubmitingCode = false;
   isSavingCode = false;
   errorMessage = '';
@@ -84,6 +85,7 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   }
 
   submitChoiceCode(): void {
+    console.log(this.contestId)
     if (this.contestId){
       this.submitContest();
     }else{
@@ -153,11 +155,8 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
   }
 
   showWaitingBar(): void{
-    console.log(this.progressBar);
-    console.log(this.progressBar.classList);
     this.progressBar.classList.remove('opacity-none');
     this.progressBar.classList.add('opacity-full');
-    console.log(this.progressBar.classList);
   }
 
   hideWaitingBar(): void{
@@ -174,7 +173,11 @@ export class CodeEditorComponent implements OnInit, AfterViewInit{
     this.aceEditorOutput = ace.edit(this.output.nativeElement);
     this.aceEditorOutput.setReadOnly(true);
     if (this.contestId){
-      this.aceEditor.session.setValue('Welcome in this contest !');
+      if (this.userCode != null){
+        this.aceEditor.session.setValue(this.userCode);
+      } else {
+        this.aceEditor.session.setValue('Welcome in this contest !');
+      }
       this.aceEditorInput.setReadOnly(true);
     } else{
       this.aceEditor.session.setValue('Choose a programing langage and let\'s code !');

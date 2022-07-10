@@ -70,4 +70,8 @@ export class SocialNetworkService {
     return this.http.delete<any>(environment.api_url + '/comments/' + id);
   }
 
+  removePublication(id: string): Observable<any>{
+    return this.http.delete( environment.api_url + '/publications/' + id);
+  }
+
 }

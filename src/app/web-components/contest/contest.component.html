@@ -69,7 +69,7 @@
 
 
 
-<app-code-editor *ngIf="contestRule && !contestEnded && !isAdmin && !contestNotStarted" [contestId]="contestId" [langId]="contestRule.languageId"></app-code-editor>
+<app-code-editor *ngIf="contestRule && !contestEnded && !isAdmin && !contestNotStarted && userCodeFound" [contestId]="contestId" [langId]="contestRule.languageId" [userCode]="userCode"></app-code-editor>
 
 <div class="d-flex" *ngIf="contestNotStarted || contestEnded">
   <span class="no-pub">{{contestNotStarted ? 'The contest will start soon ...' : 'The contest is finished ...' }}</span>

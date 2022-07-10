@@ -21,6 +21,9 @@ export class BoardComponent implements OnInit {
   @ViewChild('publicationDialog', { static: true }) PublicationDialog: TemplateRef<any>;
   @ViewChild('awaitingPublicationRequestSend', { static: true }) awaitingPublicationRequestSend: TemplateRef<any>;
   @ViewChild('creationPublicationRequestResult', { static: true }) creationPublicationRequestResult: TemplateRef<any>;
+  @ViewChild('awaitingPublicationRequestDelete', { static: true }) awaitingPublicationRequestDelete: TemplateRef<any>;
+  @ViewChild('deletionPublicationRequestResult', { static: true }) deletionPublicationRequestResult: TemplateRef<any>;
+  @ViewChild('askRemovePublication', { static: true }) askRemovePublication: TemplateRef<any>;
 
   type: string;
   userId: string;
@@ -37,6 +40,11 @@ export class BoardComponent implements OnInit {
   offset = 0;
   limit = 10;
   publicationForm: FormGroup;
+  selectedDeletePublication: string;
+
+
+  removePublicationSuccess = false;
+  removePublicationError = '';
 
   constructor(
     private dialog: MatDialog,
@@ -148,8 +156,17 @@ export class BoardComponent implements OnInit {
       this.getFirstPublications();
       this.addPublicationSuccess = false;
     }
+
+    if (this.removePublicationSuccess){
+      const index = this.publications.findIndex(x => x.id === this.selectedDeletePublication);
+      this.publications.splice(index, 1);
+      this.removePublicationSuccess = false;
+    }
+
     setTimeout(() => {
       this.addPublicationError = '';
+      this.removePublicationError = '';
+      this.selectedDeletePublication = '';
     }, 500);
   }
 
@@ -177,5 +194,22 @@ export class BoardComponent implements OnInit {
 
   getDate(createdAt: string): string {
     return createdAt.split('T')[0];
+  }
+
+  removePublication(): void {
+    this.openDialog(this.awaitingPublicationRequestDelete);
+    this.socialNetworkService.removePublication(this.selectedDeletePublication).subscribe(value => {
+      this.removePublicationSuccess = true;
+      this.openDialog(this.deletionPublicationRequestResult);
+    }, error => {
+        console.log(error);
+        this.removePublicationError = error.message;
+        this.openDialog(this.deletionPublicationRequestResult);
+    });
+  }
+
+  askPublicationDeletion(id: string): void {
+    this.selectedDeletePublication = id;
+    this.openDialog(this.askRemovePublication);
   }
 }

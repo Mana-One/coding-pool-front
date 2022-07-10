@@ -7,7 +7,6 @@ import {ResizedEvent} from 'angular-resize-event';
 import {UserInfos} from '../../models/user-infos';
 import {MatDialog} from '@angular/material/dialog';
 import {RegisterService} from '../../services/register.service';
-import {ProgramCreation} from '../../models/program-creation';
 import {EditAccount} from '../../models/edit-account';
 
 @Component({
@@ -25,11 +24,13 @@ export class MyAccountComponent implements OnInit {
   hideNewPassword = true;
   hideConfirmNewPassword = true;
   errorMessage = '';
-  userInfos = new UserInfos('null', 'null', 'null', 'null', 'null');
+  userInfos: UserInfos;
   changePasswordAttemptFailed = false;
   modifyAccountError: string;
   editAccountForm: FormGroup;
   modifyAccountSuccess = false;
+  imageSrc: string;
+  picture: any;
 
   @ViewChild('ModifyAccountForm', { static: true }) ModifyAccountForm: TemplateRef<any>;
   @ViewChild('awaitingModifyAccount', { static: true }) awaitingModifyAccount: TemplateRef<any>;
@@ -44,7 +45,6 @@ export class MyAccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.initChangePasswordForm();
-    this.initEditAccountForm();
     this.getUserInfos();
     this.changePasswordForm.controls.confirmNewPassword.valueChanges.pipe(
       debounceTime(1000),
@@ -64,23 +64,6 @@ export class MyAccountComponent implements OnInit {
         this.checkPasswordRequirements(value);
       });
 
-    this.editAccountForm.controls.newUserName.valueChanges.pipe(
-      debounceTime(1000),
-      distinctUntilChanged()
-    ).subscribe(
-      value => {
-        this.registerService.checkUserName(this.editAccountForm.controls.newUserName.value).subscribe(
-          response => {
-            if (response.isUsernameUsed){
-              this.editAccountForm.controls.newUserName.setErrors({usedUsername: true});
-            }else{
-              this.editAccountForm.controls.newUserName.setErrors({usedUsername: null});
-              this.editAccountForm.controls.newUserName.updateValueAndValidity();
-            }
-          }, error => {
-            console.log(error);
-          });
-      });
 
   }
 
@@ -88,6 +71,26 @@ export class MyAccountComponent implements OnInit {
     this.userService.getConnectedUserInfo().subscribe(
       value => {
         this.userInfos = value;
+        this.userService.setProfilPicture(this.userInfos.picture);
+        this.initEditAccountForm();
+        this.editAccountForm.controls.newUserName.valueChanges.pipe(
+          debounceTime(1000),
+          distinctUntilChanged()
+        ).subscribe(
+          value => {
+            this.registerService.checkUserName(this.editAccountForm.controls.newUserName.value).subscribe(
+              response => {
+                if (response.isUsernameUsed){
+                  this.editAccountForm.controls.newUserName.setErrors({usedUsername: true});
+                }else{
+                  this.editAccountForm.controls.newUserName.setErrors({usedUsername: null});
+                  this.editAccountForm.controls.newUserName.updateValueAndValidity();
+                }
+              }, error => {
+                console.log(error);
+              });
+          });
+
       }, error => {
 
       });
@@ -103,8 +106,10 @@ export class MyAccountComponent implements OnInit {
 
   initEditAccountForm(): void{
     this.editAccountForm = new FormGroup({
-      newUserName: new FormControl('', [ Validators.minLength(3), Validators.maxLength(32)]),
-      newEmail: new FormControl('', [ Validators.email]),
+      newUserName: new FormControl(this.userInfos.username, [Validators.required, Validators.minLength(3), Validators.maxLength(32)]),
+      newEmail: new FormControl(this.userInfos.email, [Validators.required, Validators.email]),
+      picture: new FormControl('', [Validators.required]),
+      fileSource: new FormControl('', )
     });
   }
 
@@ -241,12 +246,13 @@ export class MyAccountComponent implements OnInit {
     const newUsername = this.editAccountForm.controls.newUserName.value;
     const newEmail = this.editAccountForm.controls.newEmail.value;
     if ( (newUsername === '' || newUsername === null) &&
-      (newEmail === '' || newEmail === null) ){
+      (newEmail === '' || newEmail === null) &&
+    this.picture === null ) {
       this.closePopUp();
       return;
     }
     this.openDialog(this.awaitingModifyAccount);
-    this.userService.changeUserInformations(new EditAccount(newUsername, newEmail, '')).subscribe(
+    this.userService.changeUserInformations(new EditAccount(newUsername, newEmail, this.picture)).subscribe(
       value => {
         this.modifyAccountSuccess = true;
         this.editAccountForm.controls.newUserName.setValue('');
@@ -260,5 +266,28 @@ export class MyAccountComponent implements OnInit {
         this.openDialog(this.ModifyAccountRequestResult);
       }
     );
+  }
+
+
+  onFileChange(event): void {
+    const reader = new FileReader();
+    if (event.target.files && event.target.files.length) {
+      const [file] = event.target.files;
+      this.picture = file;
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        this.imageSrc = reader.result as string;
+        this.editAccountForm.patchValue({
+          fileSource: reader.result
+        });
+      };
+    }
+  }
+
+  removePicture(): void {
+    this.imageSrc = null;
+    this.picture = null;
+    this.editAccountForm.controls.fileSource.setValue('');
+    this.editAccountForm.controls.picture.setValue('');
   }
 }

@@ -27,6 +27,8 @@ export class ContestComponent implements OnInit {
   contestEnded = false;
   contestNotStarted = false;
   isAdmin = false;
+  userCode: string;
+  userCodeFound = false;
 
   constructor(
     private contestService: ContestService,
@@ -42,6 +44,16 @@ export class ContestComponent implements OnInit {
     this.activatedRoute.params.subscribe(data => {
       this.contestId = data.id;
     });
+    if (!this.isAdmin){
+      this.contestService.getLastAnwserContest(this.contestId).subscribe(
+        value => {
+          this.userCode = value.sourceCode;
+          this.userCodeFound = true;
+        }
+      );
+    } else {
+      this.userCodeFound = true;
+    }
     this.getListCodeLanguageAvailable();
     this.getContestRules();
     this.getContestLeaderBoard();

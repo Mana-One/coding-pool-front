@@ -2,6 +2,7 @@ import {AfterContentInit, AfterViewInit, Component, HostListener, OnInit} from '
 import {ScrollService} from '../../services/scroll.service';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {UserService} from '../../services/user.service';
+import {valueReferenceToExpression} from '@angular/compiler-cli/src/ngtsc/annotations/src/util';
 
 @Component({
   selector: 'app-connected-user-page-layout',
@@ -41,9 +42,12 @@ export class ConnectedUserPageLayoutComponent implements OnInit, AfterContentIni
         this.isScrollHidden();
       }
     });
-    this.userPicture = this.userService.getProfilPicture() ;
-    this.userPicture = this.userPicture == 'null' ? null : this.userPicture;
-
+    this.userService.getProfilPictureEmiter().subscribe(
+     value => {
+       this.userPicture = value === 'null' ? null : value;
+     }
+    );
+    this.userService.getProfilPicture();
     const dummyEvent = {
       target: {
         innerWidth: window.innerWidth

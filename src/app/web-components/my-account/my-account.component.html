@@ -1,4 +1,4 @@
-<div id="accountContainer" (resized)="changeInfosDisposition($event)" class="container">
+<div id="accountContainer" *ngIf="userInfos" (resized)="changeInfosDisposition($event)" class="container">
   <div class="row">
     <div id="userInfos" class="d-flex">
       <div class="card">
@@ -103,6 +103,23 @@
         <mat-error>{{getFieldErrorMessageEditAccount('newEmail')}}</mat-error>
       </mat-form-field>
 
+      <div class="form-group">
+        <label for="file">Profile picture</label>
+        <input
+          formControlName="picture"
+          id="file"
+          type="file"
+          class="form-control"
+          (change)="onFileChange($event)">
+      </div>
+      <div >
+        <div class="d-flex">
+          <img [src]="imageSrc" *ngIf="imageSrc" class="m-auto my-img" style="height: 200px;width: 200px">
+        </div>
+        <div class="d-flex mt-2">
+          <button class="btn btn-block btn-danger w-auto m-auto " *ngIf="imageSrc" (click)="removePicture()">delete</button>
+        </div>
+      </div>
     </div>
     <div class="col-12 d-flex mt-2">
       <button class="btn btn-block btn-dark py-2 mr-2 my-0" (click)="closePopUp()">Cancel</button>

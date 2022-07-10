@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
 import {ContestCreation} from '../models/contest-creation';
-import {CodeContest} from '../models/code-contest';
+import {CodeContest, CodeContest2} from '../models/code-contest';
 import {PaginatedRequestClassementContest, PaginatedRequestResultContest} from '../models/paginated-request-result-publication';
 import {ContestRule} from '../models/contest-rule';
 import {ProgramSubmission} from '../models/program-submission';
@@ -44,6 +44,10 @@ export class ContestService {
 
   getAnwserContest(token: string): Observable<SubmissionResult> {
     return this.http.get<SubmissionResult>( environment.api_code_execution_url + `/submissions/${token}`);
+  }
+
+  getLastAnwserContest(contestId: string): Observable<CodeContest2> {
+    return this.http.get<CodeContest2>( environment.api_url + `/last-propositions/${contestId}`);
   }
 
 }

@@ -34,7 +34,8 @@
       <div class="row m-0 p-0">
         <div class="col-6 col-md-4 d-grid mt-2 pl-md-0">
           <div class="d-flex">
-            <a [routerLink]="userService.isConnectedUserOwner(publication.author.id) ? '/my-account' :'/user/'+publication.author.id"  class="link"><span class="m-0">{{publication.author.username ? publication.author.username : 'me'}}</span></a>
+            <a *ngIf="!userService.isConnectedUserOwner(publication.author.id)" [routerLink]="'/user/'+publication.author.id"  class="link"><span class="m-0">{{publication.author.username}}</span></a>
+            <mat-icon *ngIf="userService.isConnectedUserOwner(publication.author.id)" class="btn-danger rounded mr-auto" style="cursor: pointer" (click)="askPublicationDeletion(publication.id)">delete</mat-icon>
           </div>
         </div>
         <div class="col-6 col-md-2 d-grid mt-2">
@@ -113,5 +114,35 @@
   </div>
   <div mat-dialog-actions>
     <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
+  </div>
+</ng-template>
+
+<ng-template #awaitingPublicationRequestDelete>
+  <h1 mat-dialog-title class="card-title">Removing the publication ..</h1>
+  <div class="d-flex" mat-dialog-content>
+    <mat-spinner class="m-auto"></mat-spinner>
+  </div>
+</ng-template>
+
+
+<ng-template #deletionPublicationRequestResult>
+  <h1 mat-dialog-title class="card-title">{{addPublicationError ? 'Error' : 'Success'}}</h1>
+  <div class="d-flex" mat-dialog-content>
+    <span class="text-center">
+      {{addPublicationError ? addPublicationError: 'The publication has successfully been created !'}}
+    </span>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button mat-dialog-close class="btn btn-block btn-dark" (click)="closePopUp()">Close</button>
+  </div>
+</ng-template>
+
+
+
+<ng-template #askRemovePublication>
+  <h1 mat-dialog-title class="card-title">Are you sure to remove this Publication ?</h1>
+  <div class="d-flex" mat-dialog-content>
+    <button class="btn btn-danger btn-block my-0 mr-2" (click)="removePublication()">Yes</button>
+    <button class="btn btn-dark btn-block my-0 ml-2" (click)="closePopUp()">No</button>
   </div>
 </ng-template>

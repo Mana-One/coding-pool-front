@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -18,6 +18,7 @@ export class UserService {
   connectedUserRole: string;
   connectedUserPicture: string;
   helper = new JwtHelperService();
+  profilPicture: EventEmitter<string> = new EventEmitter();
 
   constructor(private http: HttpClient) { }
 
@@ -30,17 +31,17 @@ export class UserService {
   }
 
   changeUserInformations(editAccount: EditAccount): Observable<any>{
-    const res: any = {};
-    if (editAccount.email === '' || editAccount.email === null){
-      res.email = editAccount.email;
+    const formData = new FormData();
+    if (editAccount.email !== '' && editAccount.email !== null){
+      formData.append('email', editAccount.email);
     }
-    if (editAccount.username === '' || editAccount.username === null){
-      res.username = editAccount.username;
+    if (editAccount.username !== '' && editAccount.username !== null){
+      formData.append('username', editAccount.username);
     }
-    if (editAccount.picture === '' || editAccount.picture === null){
-      res.picture = editAccount.picture;
+    if (editAccount.picture !== '' && editAccount.picture !== null){
+      formData.append('picture', editAccount.picture);
     }
-    return this.http.put( environment.api_url + '/accounts/me', res);
+    return this.http.put( environment.api_url + '/accounts/me', formData);
   }
 
   getConnectedUserStats(): Observable<UserStats>{
@@ -77,9 +78,14 @@ export class UserService {
   setProfilPicture(picture: string): void {
     this.connectedUserPicture = picture;
     localStorage.setItem('picture', picture);
+    this.profilPicture.emit(picture);
   }
 
-  getProfilPicture(): string {
-    return localStorage.getItem('picture');
+  getProfilPicture(): void {
+    this.profilPicture.emit(localStorage.getItem('picture'));
+  }
+
+  getProfilPictureEmiter(): EventEmitter<string> {
+    return this.profilPicture;
   }
 }
