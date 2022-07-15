@@ -67,7 +67,7 @@ export class RegisterPageComponent implements OnInit {
       this.registerAttemptFailed = false;
       const formValue = this.registerForm.value;
       this.isRequestingRegister = true;
-      this.registerService.register(new Register(formValue.email, formValue.userName, formValue.password)).subscribe(
+      this.registerService.register(new Register(formValue.email, formValue.userName, formValue.password, null)).subscribe(
         value => {
           this.errorMessage = 'Registration successfully have been done, you will be redirected in a few seconds ...';
           cardMessage.classList.remove('card-error');

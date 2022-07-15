@@ -66,7 +66,7 @@ export class CreateAdminComponent implements OnInit {
       this.registerAttemptFailed = false;
       const formValue = this.registerForm.value;
       this.isRequestingRegister = true;
-      this.registerService.registerAdmin(new Register(formValue.email, formValue.userName, formValue.password)).subscribe(
+      this.registerService.registerAdmin(new Register(formValue.email, formValue.userName, formValue.password, null)).subscribe(
         value => {
           this.errorMessage = 'Registration successfully have been done';
           cardMessage.classList.remove('card-error');

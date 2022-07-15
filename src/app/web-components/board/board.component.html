@@ -22,7 +22,7 @@
           <img *ngIf="publication.author.picture !== null" class="my-img" [src]="publication.author.picture">
         </div>
         <div class="publication-content">
-          {{publication.content}}
+          <p [innerHTML]="publication.content | linkify "></p>
         </div>
         <div class="publication-access d-none d-md-block">
           <button [routerLink]="'/publication/' + publication.id" class="btn btn-block btn-dark">see publication</button>

@@ -36,7 +36,6 @@ import { PublicationComponent } from './web-components/publication/publication.c
 import {MatExpansionModule} from '@angular/material/expansion';
 import { LogoutComponent } from './web-components/logout/logout.component';
 import { SearchUserComponent } from './web-components/search-user/search-user.component';
-import { PortfolioComponent } from './web-components/portfolio/portfolio.component';
 import {MatNativeDateModule, MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
@@ -48,6 +47,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatRadioModule} from '@angular/material/radio';
 import { ContestComponent } from './web-components/contest/contest.component';
 import { ContestClassementComponent } from './web-components/contest-classement/contest-classement.component';
+import { NgxLinkifyjsModule } from 'ngx-linkifyjs';
 
 @NgModule({
   declarations: [
@@ -68,7 +68,6 @@ import { ContestClassementComponent } from './web-components/contest-classement/
     PublicationComponent,
     LogoutComponent,
     SearchUserComponent,
-    PortfolioComponent,
     MyPortfolioComponent,
     ContestsComponent,
     CreateAdminComponent,
@@ -102,6 +101,7 @@ import { ContestClassementComponent } from './web-components/contest-classement/
         MatNativeDateModule,
         MatRadioModule,
         FormsModule,
+        NgxLinkifyjsModule.forRoot()
     ],
   providers: [
     {
