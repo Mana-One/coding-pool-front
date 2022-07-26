@@ -70,7 +70,7 @@ export class BoardComponent implements OnInit {
     });
     this.getFirstPublications();
     this.publicationForm = new FormGroup({
-      publication: new FormControl('', [Validators.required, Validators.minLength(30)])
+      publication: new FormControl('', [Validators.required, Validators.minLength(30), Validators.pattern('\\s*\\S.*')])
     });
   }
 

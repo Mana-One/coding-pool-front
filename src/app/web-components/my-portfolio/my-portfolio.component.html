@@ -63,6 +63,7 @@
         <input matInput [formControlName]="'programName'" type="text" placeholder="Program title ..."/>
         <mat-error *ngIf="programCreationForm.controls.programName.hasError('required')">This field is required</mat-error>
         <mat-error *ngIf="programCreationForm.controls.programName.hasError('minlength')">Minimal length is 3 characters</mat-error>
+        <mat-error *ngIf="programCreationForm.controls.programName.hasError('pattern')">Cannot be blank</mat-error>
       </mat-form-field>
 
       <mat-form-field class="w-100 d-block" appearance="fill">
@@ -113,6 +114,7 @@
         <input matInput [formControlName]="'programName'" type="text" placeholder="Program title ..."/>
         <mat-error *ngIf="modifyProgramForm.controls.programName.hasError('required')">This field is required</mat-error>
         <mat-error *ngIf="modifyProgramForm.controls.programName.hasError('minlength')">Minimal length is 3 characters</mat-error>
+        <mat-error *ngIf="modifyProgramForm.controls.programName.hasError('pattern')">Cannot be blank</mat-error>
       </mat-form-field>
 
     </div>

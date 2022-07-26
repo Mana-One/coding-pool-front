@@ -71,6 +71,7 @@
         <input matInput [formControlName]="'contestName'" type="text" placeholder="Contest name ..."/>
         <mat-error *ngIf="contestCreationForm.controls.contestName.hasError('required')">This field is required</mat-error>
         <mat-error *ngIf="contestCreationForm.controls.contestName.hasError('minlength')">Minimal length is 3 characters</mat-error>
+        <mat-error *ngIf="contestCreationForm.controls.contestName.hasError('pattern')">Cannot be blank</mat-error>
       </mat-form-field>
 
       <mat-form-field class="mb-2 w-100" appearance="fill">
@@ -100,16 +101,18 @@
         <textarea matInput [formControlName]="'description'" type="text" placeholder="Description ..."></textarea>
         <mat-error *ngIf="contestCreationForm.controls.description.hasError('required')">This field is required</mat-error>
         <mat-error *ngIf="contestCreationForm.controls.description.hasError('minlength')">Minimal length is 20 characters</mat-error>
+        <mat-error *ngIf="contestCreationForm.controls.description.hasError('pattern')">Cannot be blank</mat-error>
       </mat-form-field>
 
       <mat-form-field class="w-100 d-block mb-2" appearance="outline">
         <input matInput [formControlName]="'input'" type="text" placeholder="input  ..."/>
-        <mat-error *ngIf="contestCreationForm.controls.input.hasError('required')">This field is required</mat-error>
+        <mat-error *ngIf="contestCreationForm.controls.input.hasError('pattern')">Cannot be blank</mat-error>
       </mat-form-field>
 
       <mat-form-field class="w-100 d-block mb-2" appearance="outline">
         <input matInput [formControlName]="'output'" type="text" placeholder="expected output ..."/>
         <mat-error *ngIf="contestCreationForm.controls.output.hasError('required')">This field is required</mat-error>
+        <mat-error *ngIf="contestCreationForm.controls.output.hasError('pattern')">Cannot be blank</mat-error>
       </mat-form-field>
 
       <p class="error" *ngIf="codeLanguages.length == 0">Error: Cannot create a program because languages are not available</p>

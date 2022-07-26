@@ -79,12 +79,12 @@ export class MyPortfolioComponent implements OnInit {
     this.getFirstPortfolioPrograms();
     this.getListCodeLanguageAvailable();
     this.programCreationForm = new FormGroup({
-      programName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      programName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.pattern('\\s*\\S.*')]),
       programLanguageId: new FormControl('', [Validators.required])
     });
 
     this.modifyProgramForm = new FormGroup({
-      programName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      programName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.pattern('\\s*\\S.*')]),
     });
 
     this.shareProgramForm = new FormGroup({

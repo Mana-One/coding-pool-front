@@ -68,13 +68,13 @@ export class ContestsComponent implements OnInit {
 
     this.getListCodeLanguageAvailable();
     this.contestCreationForm = new FormGroup({
-      contestName: new FormControl('', [Validators.required, Validators.minLength(3)]),
+      contestName: new FormControl('', [Validators.required, Validators.minLength(3), Validators.pattern('\\s*\\S.*')]),
       startDate: new FormControl('', [Validators.required]),
       endDate: new FormControl('', [Validators.required]),
       programLanguageId: new FormControl('', [Validators.required]),
-      description: new FormControl('', [Validators.required, Validators.minLength(20)]),
-      input: new FormControl('', [Validators.required]),
-      output: new FormControl('', [Validators.required])
+      description: new FormControl('', [Validators.required, Validators.minLength(20), Validators.pattern('\\s*\\S.*')]),
+      input: new FormControl('', [Validators.pattern('\\s*\\S.*')]),
+      output: new FormControl('', [Validators.required, Validators.pattern('\\s*\\S.*')])
     });
   }
 
