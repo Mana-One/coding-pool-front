@@ -11,7 +11,7 @@
     <div class="post-card rounded col-12 col-md-6 sized mt-md-3" *ngFor='let program of programs'>
       <div class="row">
         <div class="col-12 w-100 d-flex">
-          <mat-icon class=" mr-auto icone icone-click" style="height: auto" (click)="openProgramModificationForm(program)"><i class="material-icons">edit</i></mat-icon>
+          <mat-icon *ngIf="isMe" class=" mr-auto icone icone-click" style="height: auto" (click)="openProgramModificationForm(program)"><i class="material-icons">edit</i></mat-icon>
 
           <div class="d-flex ml-auto" >
 
